@@ -21,27 +21,28 @@
         }
 
         void draw(){  
-          beginShape();
-          
-              vertex(1*width, x + 1*width);
-              
-              vertex(2*width, x + 1*width);
-              
-              vertex(2*width, x + 2*width);
-              
-              vertex(3*width, x + 2*width);
-              
-              vertex(3*width, x + 4*width);
-              
-              vertex(2*width, x + 4*width);
-              
-              vertex(2*width, x + 3*width);
-              
-              vertex(1*width, x + 3*width);
-
-              vertex(1*width, x + 1*width);
-              
-          endShape();
+        	background(100);
+			beginShape();
+			
+				vertex(1*width, x + 1*width);
+				
+				vertex(2*width, x + 1*width);
+				
+				vertex(2*width, x + 2*width);
+				
+				vertex(3*width, x + 2*width);
+				
+				vertex(3*width, x + 4*width);
+				
+				vertex(2*width, x + 4*width);
+				
+				vertex(2*width, x + 3*width);
+				
+				vertex(1*width, x + 3*width);
+				
+				vertex(1*width, x + 1*width);
+			
+			endShape();
 
           x = x + 2;
         }
