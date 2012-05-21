@@ -1,8 +1,6 @@
 
         int width = 10;
         int x = 0;
-	int [] xa = new int[20];
-	int [] ya = new int[20];
 	
 
 	void setup()
