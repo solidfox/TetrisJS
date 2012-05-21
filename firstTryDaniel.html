@@ -21,30 +21,29 @@
         }
 
         void draw(){  
-        	background(100);
+        	background( 100 );
+			
 			beginShape();
-			
-				vertex(1*width, x + 1*width);
+				vertex(posx, posyy);
+						  
+				vertex(posx + 1*width, posy + 0*width);
 				
-				vertex(2*width, x + 1*width);
+				vertex(posx + 1*width, posy + 1*width);
 				
-				vertex(2*width, x + 2*width);
+				vertex(posx + 2*width, posy + 1*width);
 				
-				vertex(3*width, x + 2*width);
+				vertex(posx + 2*width, posy + 3*width);
 				
-				vertex(3*width, x + 4*width);
+				vertex(posx + 1*width, posy + 3*width);
 				
-				vertex(2*width, x + 4*width);
+				vertex(posx + 1*width, posy + 2*width);
 				
-				vertex(2*width, x + 3*width);
+				vertex(posx + 1*width, posy + 2*width);
 				
-				vertex(1*width, x + 3*width);
-				
-				vertex(1*width, x + 1*width);
-			
+				vertex(posx, posy);
 			endShape();
 
-          x = x + 2;
+          posy += 2;
         }
 
         void mousePressed(){
