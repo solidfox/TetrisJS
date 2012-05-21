@@ -1,11 +1,8 @@
 
-        int width = 10;
-        int x = 0;
-	int [] xa = new int[20];
-	int [] ya = new int[20];
-	
+int width = 10;
+int x = 0;
 
-	void setup()
+        void setup()
         {
           size(200,200);
           background(125);
@@ -40,23 +37,9 @@
 			
 			endShape();
 
-          x = x + 0.5;
+          x = x + 2;
         }
 
-        void keyPressed(){
-		int i;
-            	if(key == CODED) {
-			if(keyCode == DOWN) {
-				x=x+3;	
-				loop();
-			}else{
-				loop();
-			}
-	    	}		
+        void mousePressed(){
+            loop();
         }
-
-
-
-
-
-
