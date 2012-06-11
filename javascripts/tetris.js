@@ -19,8 +19,8 @@ var GameArea = function() {
 	var width = 10;
 	var height = 20;
 	
-	var baseSpeed = 1000; // Milliseconds for block to move down one row
-	var speed = 1;
+	var baseSpeed = 1000; 	// Milliseconds for block to move down one row
+	var speed = 1;			// Divisor by which to divide the baseSpeed
 	
 	var mess = new Mess();
 	var tetrisBlock = null;
