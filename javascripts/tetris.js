@@ -31,6 +31,15 @@ GameArea.prototype.isGameOver = function() {
 		return mess.getHeight() >= this.height;
 };
 GameArea.prototype.loop = function() {
+	// TODO is the game initialized?
+	
+	blockPosition.moveDown();
+	
+	if (hasCollided()) {
+		mess.add(tetrisBlock);
+		// TODO generate new block
+	}
+	
 
 	if (this.isGameOver()) {
 		return this;
@@ -41,10 +50,14 @@ GameArea.prototype.moveRight = function() {
 	blockPosition.moveRight();
 };
 GameArea.prototype.moveLeft = function() {
+	blockPosition.moveLeft();
 };
 GameArea.prototype.moveDown = function() {
+	blockPosition.moveDown();
 };
 GameArea.prototype.rotate = function() {
+	// TODO rotate the displayed block
+	tetrisBlock.rotate();
 };
 GameArea.prototype.deleteRow = function() {
 		window.alert("Game area delete");
@@ -61,6 +74,9 @@ Mess.prototype.deleteRow = function() {
 };
 Mess.prototype.getPoints = function() {
 };
+Mess.prototype.add = function(tetrisBlock) { 
+// TODO
+}
 
 
 var TetrisBlock = function() {};
@@ -74,7 +90,7 @@ TetrisBlock.prototype.LBlock = [
 		[1,1,1],
 		[1,0,0]
 		]
-;2
+;
 TetrisBlock.prototype.IBlock = [
 		[1,1,1,1]
 		]
