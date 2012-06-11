@@ -1,12 +1,10 @@
-
-var Controller = function() {
-	var GameArea = new GameArea();
-};
+var Controller = function() {};
 
 Controller.prototype.start = function() {
 		$(function(){
 				$('input').click(function(){
-						$('#startstop').attr('value','pause');
+						$('#start').attr('value','pause');
+						$('#stop').attr('disabled', false);
 				})				
 		})
 };
@@ -15,49 +13,26 @@ Controller.prototype.gameOver = function() {
 };
 
 
-var GameArea = function() {
-	var width = 10;
-	var height = 20;
-	
-	var baseSpeed = 1000; 	// Milliseconds for block to move down one row
-	var speed = 1;			// Divisor by which to divide the baseSpeed
-	
-	var mess = new Mess();
-	var tetrisBlock = null;
-	var blockPosition = null;
-};
+var GameArea = function() {};
+GameArea.prototype = new Controller();
 
+this.width = 14;
+this.height = 20;
+this.is_gameover = 0;
 GameArea.prototype.isGameOver = function() {
-		return mess.getHeight() >= this.height;
+		if(is_gameover == 1){
+				//gameOver()
+		}
 };
 GameArea.prototype.loop = function() {
-	// TODO is the game initialized?
-	
-	blockPosition.moveDown();
-	
-	if (hasCollided()) {
-		mess.add(tetrisBlock);
-		// TODO generate new block
-	}
-	
-
-	if (this.isGameOver()) {
-		return this;
-	}
-	setTimeout(loop(), this.baseSpeed/speed);
 };
 GameArea.prototype.moveRight = function() {
-	blockPosition.moveRight();
 };
 GameArea.prototype.moveLeft = function() {
-	blockPosition.moveLeft();
 };
 GameArea.prototype.moveDown = function() {
-	blockPosition.moveDown();
 };
 GameArea.prototype.rotate = function() {
-	// TODO rotate the displayed block
-	tetrisBlock.rotate();
 };
 GameArea.prototype.deleteRow = function() {
 		window.alert("Game area delete");
@@ -74,9 +49,6 @@ Mess.prototype.deleteRow = function() {
 };
 Mess.prototype.getPoints = function() {
 };
-Mess.prototype.add = function(tetrisBlock) { 
-// TODO
-}
 
 
 var TetrisBlock = function() {};
