@@ -1,14 +1,10 @@
 
 var Controller = function() {
-	var GameArea = new GameArea();
 };
 
 Controller.prototype.start = function() {
-		$(function(){
-				$('input').click(function(){
-						$('#startstop').attr('value','pause');
-				})				
-		})
+        var gameArea = new GameArea($('#gamearea'));
+		$('#startstop').attr('value','pause');
 };
 Controller.prototype.gameOver = function() {
 		window.alert("gameOver");
@@ -124,6 +120,10 @@ TetrisBlock.prototype.SpecialBlock = [
 		]
 ;
 
-hiroshi = new TetrisBlock();
-hiroshi.deleteRow();                                                         
-hiroshi.start(); 
+
+$(document).ready(function(){
+    var controller = new Controller();
+    $("#startstop").bind('click', function(){
+        controller.start()
+    });
+});
