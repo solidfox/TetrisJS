@@ -19,6 +19,9 @@ var GameArea = function() {
 	var width = 10;
 	var height = 20;
 	
+	var baseSpeed = 1000; // Milliseconds for block to move down one row
+	var speed = 1;
+	
 	var mess = new Mess();
 	var tetrisBlock = null;
 	var blockPosition = null;
@@ -28,8 +31,14 @@ GameArea.prototype.isGameOver = function() {
 		return mess.getHeight() >= this.height;
 };
 GameArea.prototype.loop = function() {
+
+	if (this.isGameOver()) {
+		return this;
+	}
+	setTimeout(loop(), this.baseSpeed/speed);
 };
 GameArea.prototype.moveRight = function() {
+	blockPosition.moveRight();
 };
 GameArea.prototype.moveLeft = function() {
 };
