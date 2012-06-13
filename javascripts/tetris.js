@@ -41,12 +41,16 @@ GameArea.prototype.clearCanvas = function(aDiv) {
     this.canvas = $('<div class="gameCanvas"></div>').appendTo(aDiv).width(pixelWidth).height(pixelHeight);
 }
 GameArea.prototype.hasCollided = function() {
+	var point = {};
     for (var i = 0; i < matrix.length; i++) {
 	    var blockRow = matrix[i];
-	    var rowNumber = i + blockPosition.y;
+	    point.y = i + blockPosition.y;
 	    for (var j = 0; j < blockRow.length; j++) {
-		    var columnNumber = j + blockPosition.x;
-		    if (mess.hasPoint(rowNumber, columnNumber)) {
+		    point.x = j + blockPosition.x;
+		    if (mess.hasPoint(point)) {
+			    return true;
+		    }
+		    if (point.y > this.height) {
 			    return true;
 		    }
 	    }
@@ -94,8 +98,9 @@ GameArea.prototype.newBlock() {
 }
 
 
-var Mess = function() {};
-//Mess.prototype = new GameArea();
+function Mess() {
+	this.matrix = undefined;
+};
 
 Mess.prototype.hasCompleteRow = function() {
 };
@@ -157,6 +162,30 @@ TetrisBlock.prototype.defaultBlocks = {
 		[1,0],
 		[1,1]
 	]
+}
+
+function PointDrawing(pointSize, matrix, position) {
+	function drawnPoint() {
+		var div = $('<div class="point"></div>');
+		div.css({
+			position: 'absolute';
+			height: pointSize, 
+			width: pointSize
+		});
+		return div;
+	}
+	
+	var enclosure = $('<div class="PointDrawing"></div>');
+	enclosure.css({
+		position: 'relative',
+		
+	});
+	
+	enclosure.append
+}
+
+PointDrawing.prototype.addPoint(point) {
+	
 }
 
 $(document).ready(function(){
