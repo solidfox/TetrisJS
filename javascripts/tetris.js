@@ -15,7 +15,7 @@ function GameArea(gameareaDiv) {
 	this.width = 10;         // ten block width
 	this.height = 20;
 	
-	this.STARTPOSITION = {y:0, x:width/2};
+	this.STARTPOSITION = {y:0, x:this.width/2};
 	
     this.pointSize = 20;     // size of one block in pixels
     
@@ -91,8 +91,8 @@ GameArea.prototype.rotate = function() {
 };
 GameArea.prototype.deleteRow = function() {
 		window.alert("Game area delete");
-};
-GameArea.prototype.newBlock() {
+}
+GameArea.prototype.newBlock = function() {
 	this.tetrisBlock = new TetrisBlock();
 	this.blockPosition = this.STARTPOSITION;
 }
@@ -168,7 +168,7 @@ function PointDrawing(pointSize, matrix, position) {
 	function drawnPoint() {
 		var div = $('<div class="point"></div>');
 		div.css({
-			position: 'absolute';
+			position: 'absolute',
 			height: pointSize, 
 			width: pointSize
 		});
@@ -181,12 +181,19 @@ function PointDrawing(pointSize, matrix, position) {
 		
 	});
 	
-	enclosure.append
+	
+	enclosure.append(drawnPoint())
 }
 
-PointDrawing.prototype.addPoint(point) {
+PointDrawing.prototype.addPoint = function(point) {
 	
 }
+
+function Matrix(twoDimArray) {
+	var matrix = twoDimArray;
+}
+
+
 
 $(document).ready(function(){
     var controller = new Controller();
