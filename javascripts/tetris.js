@@ -11,9 +11,11 @@ Controller.prototype.gameOver = function() {
 };
 
 
-var GameArea = function(gameareaDiv) {
+function GameArea(gameareaDiv) {
 	this.width = 10;         // ten block width
 	this.height = 20;
+	
+	this.STARTPOSITION = {y:0, x:width/2};
 	
     this.pointSize = 20;     // size of one block in pixels
     
@@ -22,10 +24,12 @@ var GameArea = function(gameareaDiv) {
 	
 	this.mess = new Mess();
 	this.tetrisBlock = undefined;
-	this.blockPosition = undefined;
+	this.blockPosition = undefined;		// An object on the form {y:##, x:##}
     
     this.canvas = undefined;    
     this.clearCanvas(gameareaDiv);
+    
+    var that = this;
 };
 
 GameArea.prototype.clearCanvas = function(aDiv) {
@@ -37,19 +41,29 @@ GameArea.prototype.clearCanvas = function(aDiv) {
     this.canvas = $('<div class="gameCanvas"></div>').appendTo(aDiv).width(pixelWidth).height(pixelHeight);
 }
 GameArea.prototype.hasCollided = function() {
-    // TODO
+    for (var i = 0; i < matrix.length; i++) {
+	    var blockRow = matrix[i];
+	    var rowNumber = i + blockPosition.y;
+	    for (var j = 0; j < blockRow.length; j++) {
+		    var columnNumber = j + blockPosition.x;
+		    if (mess.hasPoint(rowNumber, columnNumber)) {
+			    return true;
+		    }
+	    }
+    }
+    return false;
 }
 GameArea.prototype.isGameOver = function() {
-		return mess.getHeight() >= this.height;
+	return mess.getHeight() >= this.height;
 }
 GameArea.prototype.loop = function() {
 	// TODO is the game initialized?
 	
 	this.blockPosition.moveDown();
 	
-	if (hasCollided()) {
+	if (this.hasCollided()) {
 		this.mess.add(tetrisBlock);
-		// TODO generate new block
+		this.newBlock();
 	}
 	
 
@@ -74,6 +88,10 @@ GameArea.prototype.rotate = function() {
 GameArea.prototype.deleteRow = function() {
 		window.alert("Game area delete");
 };
+GameArea.prototype.newBlock() {
+	this.tetrisBlock = new TetrisBlock();
+	this.blockPosition = this.STARTPOSITION;
+}
 
 
 var Mess = function() {};
