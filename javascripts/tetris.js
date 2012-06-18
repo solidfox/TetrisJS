@@ -12,6 +12,10 @@ Controller.prototype.gameOver = function() {
 };
 
 
+/**
+ * GameArea 
+ * @param gameareaDiv jQuery object for the gamearea
+ */
 function GameArea(gameareaDiv) {
 	if (gameareaDiv === undefined) {
 		throw new Error("GameArea was created without specifying a gameareaDiv.");
