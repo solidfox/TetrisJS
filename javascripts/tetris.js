@@ -174,7 +174,7 @@ TetrisBlock.prototype.defaultBlocks = {
 function PointView(pointSize, matrix, position) {
 	
 	this._enclosure = $('<div class="PointView"></div>');
-	enclosure.css({
+	this._enclosure.css({
 		position: 'relative',
 		
 	});
@@ -197,16 +197,20 @@ PointView.prototype.addPoint = function(point) {
 }
 
 function Matrix(twoDimArray) {
-	this.matrix = twoDimArray;
+	this.matrix = twoDimArray; // Holds the actual matrix
 }
 
-Matrix.prototype.getPoints = function() {
+Matrix.prototype.getPoints = function(position) {
+	if (position === undefined) {
+		position = {y:0, x:0};
+	}
+	
 	var points = [];
     for (var i = 0; i < this.matrix.length; i++) {
 	    var blockRow = this.matrix[i];
-	    var y = i;
+	    var y = i + position.y;
 	    for (var j = 0; j < blockRow.length; j++) {
-		    var x = j;
+		    var x = j + position.x;
 		    if (blockRow[j] == 1) {
 			    points.push({"y":y, "x":x});
 		    }
