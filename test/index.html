@@ -38,13 +38,13 @@ test("Create a matrix", function() {
 test("getPoints()", function() {
 	var points = matrix.getPoints();
 	ok(points.length == 4);
-	var expectedPoints = [{y:0,x:1},{y:1,x:0},{y:1,x:1},{y:2,x:0}];
+	var expectedPoints = [new Point(1,0),new Point(0,1),new Point(1,1),new Point(0,2)];
 	
 	var pointsString = JSON.stringify(points);
 	
 	for (var i = 0; i < expectedPoints.length; i++) {
 		var pointString = JSON.stringify(expectedPoints[i]);
-		ok(pointsString.indexOf(pointString) != -1);
+		ok(pointsString.indexOf(pointString) != -1, pointsString + " did not contain " + pointString);
 	}
 });
 

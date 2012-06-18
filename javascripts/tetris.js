@@ -211,7 +211,7 @@ function Matrix(twoDimArray) {
 }
 Matrix.prototype.getPoints = function(position) {
 	if (position === undefined) {
-		position = {y:0, x:0};
+		position = new Point(0, 0);
 	}
 	
 	var points = [];
@@ -221,7 +221,7 @@ Matrix.prototype.getPoints = function(position) {
 	    for (var j = 0; j < blockRow.length; j++) {
 		    var x = j + position.x;
 		    if (blockRow[j] == 1) {
-			    points.push({"y":y, "x":x});
+			    points.push(new Point(x, y));
 		    }
 	    }
     }
