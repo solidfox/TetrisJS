@@ -207,6 +207,11 @@ function Matrix(twoDimArray) {
 	this.matrix = twoDimArray; // Holds the actual matrix
 }
 
+function Point(){
+    this.x;
+    this.y;
+}
+
 Matrix.prototype.getPoints = function(position) {
 	if (position === undefined) {
 		position = {y:0, x:0};
