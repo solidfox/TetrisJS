@@ -207,9 +207,10 @@ function Matrix(twoDimArray) {
 	this.matrix = twoDimArray; // Holds the actual matrix
 }
 
-function Point(){
-    this.x;
-    this.y;
+//The class express points
+function Point(x, y){
+    this.x = x;
+    this.y = y;
 }
 
 Matrix.prototype.getPoints = function(position) {
