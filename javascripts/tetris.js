@@ -12,6 +12,10 @@ Controller.prototype.gameOver = function() {
 
 
 function GameArea(gameareaDiv) {
+	if (gameareaDiv === undefined) {
+		throw new Error("GameArea was created without specifying a gameareaDiv.");
+	}
+
 	this.width = 10;         // ten block width
 	this.height = 20;
 	
@@ -125,11 +129,12 @@ var TetrisBlock = function(kind) {
         this.matrix = this.defaultBlocks[kind];
     }   
 };
-TetrisBlock.prototype = new GameArea();
 
 TetrisBlock.prototype.rotate =function() {
+	// TODO
 };
 TetrisBlock.prototype.getPoints = function() {
+	// TODO
 };
 TetrisBlock.prototype.defaultBlocks = {
     "sBlock": [
@@ -165,35 +170,48 @@ TetrisBlock.prototype.defaultBlocks = {
 }
 
 function PointDrawing(pointSize, matrix, position) {
-	function drawnPoint() {
-		var div = $('<div class="point"></div>');
-		div.css({
-			position: 'absolute',
-			height: pointSize, 
-			width: pointSize
-		});
-		return div;
-	}
 	
-	var enclosure = $('<div class="PointDrawing"></div>');
+	this._enclosure = $('<div class="PointDrawing"></div>');
 	enclosure.css({
 		position: 'relative',
 		
 	});
 	
 	
-	enclosure.append(drawnPoint())
+	this._enclosure.append(drawnPoint())
 }
 
+PointDrawing.prototype._drawnPoint = function() {
+	var div = $('<div class="point"></div>');
+	div.css({
+		position: 'absolute',
+		height: pointSize, 
+		width: pointSize
+	});
+	return div;
+}
 PointDrawing.prototype.addPoint = function(point) {
 	
 }
 
 function Matrix(twoDimArray) {
-	var matrix = twoDimArray;
+	this.matrix = twoDimArray;
 }
 
-
+Matrix.prototype.getPoints = function() {
+	var points = [];
+    for (var i = 0; i < this.matrix.length; i++) {
+	    var blockRow = this.matrix[i];
+	    var y = i;
+	    for (var j = 0; j < blockRow.length; j++) {
+		    var x = j;
+		    if (blockRow[j] == 1) {
+			    points.push({"y":y, "x":x});
+		    }
+	    }
+    }
+    return points;
+}
 
 $(document).ready(function(){
     var controller = new Controller();
