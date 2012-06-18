@@ -118,7 +118,7 @@ Mess.prototype.add = function(tetrisBlock) {
 }
 
 
-var TetrisBlock = function(kind) {
+function TetrisBlock(kind) {
     if (kind === undefined) {
         var keys = Object.keys(this.defaultBlocks);
         var randomIndex = Math.floor( Math.random() * keys.length );
@@ -128,6 +128,8 @@ var TetrisBlock = function(kind) {
         this.name = kind;
         this.matrix = this.defaultBlocks[kind];
     }   
+    //Get the points of blocks 
+    this.pointMatrix = new Matrix(this.matrix);
 };
 
 TetrisBlock.prototype.rotate =function() {
