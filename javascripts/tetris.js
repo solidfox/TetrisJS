@@ -17,7 +17,7 @@ function GameArea(gameareaDiv) {
 		throw new Error("GameArea was created without specifying a gameareaDiv.");
 	}
 
-    this._start = false;
+    this._start = false;    //The status whether the game has started
 
 	this.width = 10;         // ten block width
 	this.height = 20;
@@ -68,7 +68,6 @@ GameArea.prototype.isGameOver = function() {
 	return mess.getHeight() >= this.height;
 }
 GameArea.prototype.loop = function() {
-	// TODO is the game initialized?
     if( this._start = false ){
         this._start = true;
         this._newBlock();
@@ -206,13 +205,6 @@ PointView.prototype.addPoint = function(point) {
 function Matrix(twoDimArray) {
 	this.matrix = twoDimArray; // Holds the actual matrix
 }
-
-//The class express points
-function Point(x, y){
-    this.x = x;
-    this.y = y;
-}
-
 Matrix.prototype.getPoints = function(position) {
 	if (position === undefined) {
 		position = {y:0, x:0};
@@ -231,6 +223,13 @@ Matrix.prototype.getPoints = function(position) {
     }
     return points;
 }
+
+//The class express points
+function Point(x, y){
+    this.x = x;
+    this.y = y;
+}
+
 
 $(document).ready(function(){
     var controller = new Controller();
