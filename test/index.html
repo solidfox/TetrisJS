@@ -5,38 +5,47 @@
   <script src="../lib/jquery.js"></script>
   <link rel="stylesheet" href="qunit.css" type="text/css" media="screen" />
 <script type="text/javascript" src="qunit.js"></script>
-<script type="text/javascript" src="../javascripts/tetris.js"
+<script type="text/javascript" src="../javascripts/tetris.js"></script>
 
   <script>
   $(document).ready(function(){
-    
-test("a basic test example", function() {
-  ok( true, "this test is fine" );
-  var value = "hello";
-  equal( value, "hello", "We expect value to be hello" );
+
+module("GameArea");
+
+test("Initialization", function() { 
+	raises(function(){
+		new GameArea();
+	}, "Error was not thrown when GameArea was initialized without a gameareaDiv");
+	var div = $("<div></div>");
+	var gameArea = new GameArea(div);
+	ok(gameArea instanceof GameArea, "The created GameArea was not an instance of GameArea.");
 });
 
 module("Matrix");
 
+var twoDimList = [
+	[0,1],
+	[1,1],
+	[1,0]
+];
+var matrix = new Matrix(twoDimList);
+
 test("Create a matrix", function() {
-	var twoDimList = [
-		[0,1],
-		[1,1],
-		[1,0]
-	];
-	var matrix = new Matrix(twoDimList);
+	ok(!(matrix instanceof String), "The created matrix was found to be ");
+	ok(matrix instanceof Matrix, "The created matrix was not a Matrix object.");
 });
 
-test("second test within module", function() {
-  ok( true, "all pass" );
-});
-
-module("Module B");
-
-test("some other test", function() {
-  expect(2);
-  equal( true, false, "failing test" );
-  equal( true, true, "passing test" );
+test("getPoints()", function() {
+	var points = matrix.getPoints();
+	ok(points.length == 4);
+	var expectedPoints = [{y:0,x:1},{y:1,x:0},{y:1,x:1},{y:2,x:0}];
+	
+	var pointsString = JSON.stringify(points);
+	
+	for (var i = 0; i < expectedPoints.length; i++) {
+		var pointString = JSON.stringify(expectedPoints[i]);
+		ok(pointsString.indexOf(pointString) != -1);
+	}
 });
 
   });
