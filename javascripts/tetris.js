@@ -16,6 +16,8 @@ function GameArea(gameareaDiv) {
 		throw new Error("GameArea was created without specifying a gameareaDiv.");
 	}
 
+    this._start = false;
+
 	this.width = 10;         // ten block width
 	this.height = 20;
 	
@@ -66,6 +68,9 @@ GameArea.prototype.isGameOver = function() {
 }
 GameArea.prototype.loop = function() {
 	// TODO is the game initialized?
+    if( this._start = false ){
+        this._start = true;
+    }
 	
 	this.blockPosition.moveDown();
 	
