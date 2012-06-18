@@ -71,13 +71,14 @@ GameArea.prototype.loop = function() {
 	// TODO is the game initialized?
     if( this._start = false ){
         this._start = true;
+        this._newBlock();
     }
 	
 	this.blockPosition.moveDown();
 	
 	if (this.hasCollided()) {
 		this.mess.add(tetrisBlock);
-		this.newBlock();
+		this._newBlock();
 	}
 	
 
@@ -102,7 +103,7 @@ GameArea.prototype.rotate = function() {
 GameArea.prototype.deleteRow = function() {
 		window.alert("Game area delete");
 }
-GameArea.prototype.newBlock = function() {
+GameArea.prototype._newBlock = function() {
 	this.tetrisBlock = new TetrisBlock();
 	this.blockPosition = this.STARTPOSITION;
 }
