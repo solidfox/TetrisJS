@@ -129,7 +129,7 @@ function TetrisBlock(kind) {
         this.matrix = this.defaultBlocks[kind];
     }   
     //Get the points of blocks 
-    this.pointMatrix = new Matrix(this.matrix);
+    this.matrix = new Matrix(this.matrix);
 };
 
 TetrisBlock.prototype.rotate =function() {
