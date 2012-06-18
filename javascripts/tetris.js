@@ -3,8 +3,9 @@ var Controller = function() {
 };
 
 Controller.prototype.start = function() {
-        var gameArea = new GameArea($('#gamearea'));
-		$('#startstop').attr('value','pause');
+    var gameArea = new GameArea($('#gamearea'));
+    gameArea.loop();
+	$('#startstop').attr('value','pause');
 };
 Controller.prototype.gameOver = function() {
 		window.alert("gameOver");
