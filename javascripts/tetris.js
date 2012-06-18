@@ -169,9 +169,9 @@ TetrisBlock.prototype.defaultBlocks = {
 	]
 }
 
-function PointDrawing(pointSize, matrix, position) {
+function PointView(pointSize, matrix, position) {
 	
-	this._enclosure = $('<div class="PointDrawing"></div>');
+	this._enclosure = $('<div class="PointView"></div>');
 	enclosure.css({
 		position: 'relative',
 		
@@ -181,7 +181,7 @@ function PointDrawing(pointSize, matrix, position) {
 	this._enclosure.append(drawnPoint())
 }
 
-PointDrawing.prototype._drawnPoint = function() {
+PointView.prototype._drawnPoint = function() {
 	var div = $('<div class="point"></div>');
 	div.css({
 		position: 'absolute',
@@ -190,7 +190,7 @@ PointDrawing.prototype._drawnPoint = function() {
 	});
 	return div;
 }
-PointDrawing.prototype.addPoint = function(point) {
+PointView.prototype.addPoint = function(point) {
 	
 }
 
