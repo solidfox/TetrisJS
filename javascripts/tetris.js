@@ -186,7 +186,7 @@ function PointView(pointSize, matrix, position) {
 	});
 	
 	
-	this._enclosure.append(drawnPoint())
+	this._enclosure.append(_drawnPoint())
 }
 
 PointView.prototype._drawnPoint = function() {
