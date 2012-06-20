@@ -1,10 +1,11 @@
 
 var Controller = function() {
+	this.gameArea;
 };
 
 Controller.prototype.start = function() {
-    var gameArea = new GameArea($('#gamearea'));
-    gameArea.loop();
+    this.gameArea = new GameArea($('#gamearea'));
+    this.gameArea.loop();
 	$('#startstop').attr('value','pause');
 };
 Controller.prototype.gameOver = function() {
@@ -28,17 +29,20 @@ function GameArea(gameareaDiv) {
 	
 	this.STARTPOSITION = {y:0, x:this.width/2};
 	
-    this.pointSize = 20;     // size of one block in pixels
+    this.pointSize = 20;     	// size of one point in pixels
     
-	this.baseSpeed = 1000; 	// Milliseconds for block to move down one row
-	this.speed = 1;			// Divisor by which to divide the baseSpeed
+	this.baseSpeed = 1000; 		// Milliseconds for block to move down one row
+	this.speed = 1;				// Divisor by which to divide the baseSpeed
 	
 	this.mess = new Mess();
-	this.tetrisBlock = undefined;
-	this.blockPosition = undefined;		// An object on the form {y:##, x:##}
+	this.tetrisBlock;
+	this.blockPosition;			// A Point object
     
-    this.canvas = undefined;    
+    this.canvas = undefined;    // A jQuery object using 
     this.clearCanvas(gameareaDiv);
+    
+    this._blockView;
+    this._messView;
     
     var that = this;
 };
@@ -52,7 +56,9 @@ GameArea.prototype.clearCanvas = function(aDiv) {
     this.canvas = $('<div class="gameCanvas"></div>').appendTo(aDiv).width(pixelWidth).height(pixelHeight);
 }
 GameArea.prototype.hasCollided = function() {
-	var point = {};
+	var point = new Point(0, 0);
+	var matrix = this.tetrisBlock.matrix;
+	
     for (var i = 0; i < matrix.length; i++) {
 	    var blockRow = matrix[i];
 	    point.y = i + blockPosition.y;
@@ -69,26 +75,29 @@ GameArea.prototype.hasCollided = function() {
     return false;
 }
 GameArea.prototype.isGameOver = function() {
-	return mess.getHeight() >= this.height;
+	return this.mess.getHeight() >= this.height;
 }
 GameArea.prototype.loop = function() {
-    if( this._start = false ){
+    if( this._start === false ){
         this._start = true;
         this._newBlock();
     }
 	
-	this.blockPosition.moveDown();
+	// this.blockPosition.moveDown();
 	
 	if (this.hasCollided()) {
 		this.mess.add(tetrisBlock);
 		this._newBlock();
 	}
 	
+	var loopPeriod = this.baseSpeed/this.speed;
+	
+	this._blockView.move(this.blockPosition, loopPeriod);
 
 	if (this.isGameOver()) {
 		return this;
 	}
-	setTimeout(this.loop(), this.baseSpeed/this.speed);
+	//setTimeout(this.loop(), loopPeriod);
 };
 GameArea.prototype.moveRight = function() {
 	this.blockPosition.moveRight();
@@ -109,6 +118,8 @@ GameArea.prototype.deleteRow = function() {
 GameArea.prototype._newBlock = function() {
 	this.tetrisBlock = new TetrisBlock();
 	this.blockPosition = this.STARTPOSITION;
+	this._blockView = new PointView(this.pointSize, this.tetrisBlock.matrix, this.blockPosition);
+	this.canvas.append(this._blockView._enclosure); // TODO not nice to use private property here.
 }
 
 
@@ -124,7 +135,10 @@ Mess.prototype.deleteRow = function() {
 Mess.prototype.getPoints = function() {
 };
 Mess.prototype.add = function(tetrisBlock) { 
-// TODO
+	// TODO
+}
+Mess.prototype.getHeight = function() {
+	// TODO
 }
 
 
@@ -183,27 +197,41 @@ TetrisBlock.prototype.defaultBlocks = {
 
 function PointView(pointSize, matrix, position) {
 	
+	this._pointSize = pointSize;
 	this._enclosure = $('<div class="PointView"></div>');
 	this._enclosure.css({
 		position: 'relative',
-		
+		top: position.y * this._pointSize,
+		left: position.x * this._pointSize
 	});
 	
 	
-	this._enclosure.append(_drawnPoint())
+	var points = matrix.getPoints();
+	
+	for (var i = 0; i < points.length; i++) {
+		this._addPoint(points[i])
+	}
 }
 
 PointView.prototype._drawnPoint = function() {
 	var div = $('<div class="point"></div>');
 	div.css({
 		position: 'absolute',
-		height: pointSize, 
-		width: pointSize
+		height: this._pointSize, 
+		width: this._pointSize
 	});
 	return div;
 }
-PointView.prototype.addPoint = function(point) {
-	
+PointView.prototype._addPoint = function(position) {
+	var point = this._drawnPoint();
+	point.css({
+		top: (position.y * this._pointSize),
+		left: (position.x * this._pointSize)
+	});
+	this._enclosure.append(point);
+}
+PointView.prototype.move = function(position, animationTime) { 
+	// TODO
 }
 
 function Matrix(twoDimArray) {
@@ -236,7 +264,7 @@ function Point(x, y){
 
 
 $(document).ready(function(){
-    var controller = new Controller();
+    controller = new Controller();
     $("#startstop").bind('click', function(){
         controller.start()
     });
