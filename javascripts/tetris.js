@@ -1,16 +1,38 @@
+/**
+ * TetrisJS
+ *
+ *  A tetris game
+ */
 
+/**
+ * Controller
+ *
+ * The class that manages the gama start/pause
+ */
 var Controller = function() {
-	this.gameArea;
+	this._gameArea;
 };
 
-Controller.prototype.start = function() {
-    this.gameArea = new GameArea($('#gamearea'));
-    this.gameArea.loop();
-	$('#startstop').attr('value','pause');
+//Methods
+Controller.prototype.startstop = function() {
+    if( $('#startstop').attr('value') == 'start' ){         //start game
+        //this.gameArea = new GameArea($('#gamearea'));
+        gameArea = this.gameArea();
+        gameArea.loop();
+        $('#startstop').attr('value','pause');
+    }else if( $('#startstop').attr('value') == 'pause' ){   //pause game
+        $('#startstop').attr('value', 'start');
+    }
 };
 Controller.prototype.gameOver = function() {
 		window.alert("gameOver");
 };
+Controller.prototype.gameArea = function(){
+    if( this._gameArea == null ){
+        this._gameArea = new GameArea($('#gamearea'));
+    }
+    return this._gameArea;
+}
 
 
 /**
@@ -266,6 +288,6 @@ function Point(x, y){
 $(document).ready(function(){
     controller = new Controller();
     $("#startstop").bind('click', function(){
-        controller.start()
+        controller.startstop()
     });
 });
