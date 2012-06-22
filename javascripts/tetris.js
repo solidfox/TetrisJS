@@ -27,7 +27,7 @@ function GameArea(gameareaDiv) {
 	this.width = 10;         // ten block width
 	this.height = 20;
 	
-	this.STARTPOSITION = {y:0, x:this.width/2};
+	this.STARTPOSITION = new Point(this.width/2, 0);
 	
     this.pointSize = 20;     	// size of one point in pixels
     
@@ -43,8 +43,6 @@ function GameArea(gameareaDiv) {
     
     this._blockView;
     this._messView;
-    
-    var that = this;
 };
 
 GameArea.prototype.clearCanvas = function(aDiv) {
@@ -83,21 +81,22 @@ GameArea.prototype.loop = function() {
         this._newBlock();
     }
 	
-	// this.blockPosition.moveDown();
+	this.blockPosition.moveDown();
 	
 	if (this.hasCollided()) {
 		this.mess.add(tetrisBlock);
 		this._newBlock();
+	}
+	if (this.isGameOver()) {
+		return this;
 	}
 	
 	var loopPeriod = this.baseSpeed/this.speed;
 	
 	this._blockView.move(this.blockPosition, loopPeriod);
 
-	if (this.isGameOver()) {
-		return this;
-	}
-	//setTimeout(this.loop(), loopPeriod);
+	var that = this;
+	setTimeout(function(){that.loop()}, loopPeriod);
 };
 GameArea.prototype.moveRight = function() {
 	this.blockPosition.moveRight();
@@ -117,7 +116,7 @@ GameArea.prototype.deleteRow = function() {
 }
 GameArea.prototype._newBlock = function() {
 	this.tetrisBlock = new TetrisBlock();
-	this.blockPosition = this.STARTPOSITION;
+	this.blockPosition = new Point(this.STARTPOSITION.x,this.STARTPOSITION.y);
 	this._blockView = new PointView(this.pointSize, this.tetrisBlock.matrix, this.blockPosition);
 	this.canvas.append(this._blockView._enclosure); // TODO not nice to use private property here.
 }
@@ -231,12 +230,15 @@ PointView.prototype._addPoint = function(position) {
 	this._enclosure.append(point);
 }
 PointView.prototype.move = function(position, animationTime) { 
-	// TODO
+	this._enclosure.animate({top: position.y, left: position.x}, animationTime);
 }
+
+
 
 function Matrix(twoDimArray) {
 	this.matrix = twoDimArray; // Holds the actual matrix
 }
+
 Matrix.prototype.getPoints = function(position) {
 	if (position === undefined) {
 		position = new Point(0, 0);
@@ -260,6 +262,10 @@ Matrix.prototype.getPoints = function(position) {
 function Point(x, y){
     this.x = x;
     this.y = y;
+}
+
+Point.prototype.moveDown = function () {
+	this.y++;
 }
 
 
