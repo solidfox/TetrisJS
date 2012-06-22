@@ -1,16 +1,39 @@
+/**
+ * TetrisJS
+ *
+ *  A tetris game
+ */
 
+/**
+ * Controller
+ *
+ * The class that manages the gama start/pause
+ */
 var Controller = function() {
-	this.gameArea;
+	this._gameArea;
 };
 
-Controller.prototype.start = function() {
-    this.gameArea = new GameArea($('#gamearea'));
-    this.gameArea.loop();
-	$('#startstop').attr('value','pause');
+//Methods
+Controller.prototype.startstop = function() {
+    if( $('#startstop').attr('value') == 'start' ){         //start game
+        //this.gameArea = new GameArea($('#gamearea'));
+        gameArea = this.gameArea();
+        gameArea.loop();
+        $('#startstop').attr('value','pause');
+    }else if( $('#startstop').attr('value') == 'pause' ){   //pause game
+        //TODO make an function to pause gameArea
+        $('#startstop').attr('value', 'start');
+    }
 };
 Controller.prototype.gameOver = function() {
 		window.alert("gameOver");
 };
+Controller.prototype.gameArea = function(){
+    if( this._gameArea == null ){
+        this._gameArea = new GameArea($('#gamearea'));
+    }
+    return this._gameArea;
+}
 
 
 /**
@@ -27,7 +50,8 @@ function GameArea(gameareaDiv) {
 	this.width = 10;         // ten block width
 	this.height = 20;
 	
-	this.STARTPOSITION = new Point(this.width/2, 0);
+	//this.STARTPOSITION = {y:0, x:this.width/2};
+	this.STARTPOSITION = new Point(this.width/2,0);
 	
     this.pointSize = 20;     	// size of one point in pixels
     
@@ -43,6 +67,8 @@ function GameArea(gameareaDiv) {
     
     this._blockView;
     this._messView;
+    
+    var that = this;
 };
 
 GameArea.prototype.clearCanvas = function(aDiv) {
@@ -79,9 +105,9 @@ GameArea.prototype.loop = function() {
     if( this._start === false ){
         this._start = true;
         this._newBlock();
+    }else{
+        this.blockPosition.moveDown();
     }
-	
-	this.blockPosition.moveDown();
 	
 	if (this.hasCollided()) {
 		this.mess.add(tetrisBlock);
@@ -105,18 +131,20 @@ GameArea.prototype.moveLeft = function() {
 	this.blockPosition.moveLeft();
 };
 GameArea.prototype.moveDown = function() {
-	this.blockPosition.moveDown();
+    this.blockPosition.y += 1;
+    this._blockView.move(this.blockPosition, 100); //TODO
+	//this.blockPosition.moveDown();
 };
 GameArea.prototype.rotate = function() {
 	// TODO rotate the displayed block
 	this.tetrisBlock.rotate();
 };
 GameArea.prototype.deleteRow = function() {
-		window.alert("Game area delete");
+    window.alert("Game area delete");
 }
 GameArea.prototype._newBlock = function() {
 	this.tetrisBlock = new TetrisBlock();
-	this.blockPosition = new Point(this.STARTPOSITION.x,this.STARTPOSITION.y);
+	this.blockPosition = this.STARTPOSITION;
 	this._blockView = new PointView(this.pointSize, this.tetrisBlock.matrix, this.blockPosition);
 	this.canvas.append(this._blockView._enclosure); // TODO not nice to use private property here.
 }
@@ -141,6 +169,12 @@ Mess.prototype.getHeight = function() {
 }
 
 
+/**
+ * Tetris Block Model
+ *
+ * The model that defines he blocks
+ * @param kind string the blocktype you want.
+ */
 function TetrisBlock(kind) {
     if (kind === undefined) {
         var keys = Object.keys(this.defaultBlocks);
@@ -194,6 +228,15 @@ TetrisBlock.prototype.defaultBlocks = {
 	]
 }
 
+/**
+ * The View Class
+ *
+ * The view class to draw Points
+ *
+ * @param int       pointSize the size of each point
+ * @param array     the matrix that defines the block
+ * @param position  the position(left.top) to draw the block
+ */
 function PointView(pointSize, matrix, position) {
 	
 	this._pointSize = pointSize;
@@ -213,7 +256,7 @@ function PointView(pointSize, matrix, position) {
 }
 
 PointView.prototype._drawnPoint = function() {
-	var div = $('<div class="point"></div>');
+	var div = $('<div class="point moving"></div>');
 	div.css({
 		position: 'absolute',
 		height: this._pointSize, 
@@ -229,16 +272,17 @@ PointView.prototype._addPoint = function(position) {
 	});
 	this._enclosure.append(point);
 }
+//moves the block to @position
 PointView.prototype.move = function(position, animationTime) { 
-	this._enclosure.animate({top: position.y, left: position.x}, animationTime);
+	this._enclosure.animate({
+		top: position.y * this._pointSize, 
+		left: position.x * this._pointSize
+	}, animationTime);
 }
-
-
 
 function Matrix(twoDimArray) {
 	this.matrix = twoDimArray; // Holds the actual matrix
 }
-
 Matrix.prototype.getPoints = function(position) {
 	if (position === undefined) {
 		position = new Point(0, 0);
@@ -258,7 +302,14 @@ Matrix.prototype.getPoints = function(position) {
     return points;
 }
 
-//The class express points
+/**
+ * Point
+ * 
+ * Expresses the position of each material
+ * 
+ * @param int   x position
+ * @param int   y position
+ */
 function Point(x, y){
     this.x = x;
     this.y = y;
@@ -268,10 +319,9 @@ Point.prototype.moveDown = function () {
 	this.y++;
 }
 
-
 $(document).ready(function(){
     controller = new Controller();
     $("#startstop").bind('click', function(){
-        controller.start()
+        controller.startstop()
     });
 });
