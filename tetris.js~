@@ -9,7 +9,7 @@
  *
  * The class that manages the gama start/pause
  */
-var Controller  = function() {
+var Controller = function() {
 	this._gameArea;
 };
 
