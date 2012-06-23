@@ -1,7 +1,7 @@
 /**
  * TetrisJS
  *
- * A tetris game
+ *  A tetris game
  */
 
 /**
@@ -9,10 +9,11 @@
  *
  * The class that manages the gama start/pause
  */
-var Controller = function() {
+var Controller  = function() {
 	this._gameArea;
 };
 
+//Methods
 Controller.prototype.startstop = function() {
     if( $('#startstop').attr('value') == 'start' ){         //start game
         //this.gameArea = new GameArea($('#gamearea'));
@@ -50,16 +51,16 @@ function GameArea(gameareaDiv) {
 	this.height = 20;
 	
 	//this.STARTPOSITION = {y:0, x:this.width/2};
-	this.STARTPOSITION = new Point(this.width/2,0);
+	this.STARTPOSITION = new Point(this.width/2,0+2);
 	
     this.pointSize = 20;     	// size of one point in pixels
     
-	this.baseSpeed = 1000; 		// Milliseconds for block to move down one row
-	this.speed = 1;				// Divisor by which to divide the baseSpeed
+		this.baseSpeed = 1000; 		// Milliseconds for block to move down one row
+		this.speed = 1;				// Divisor by which to divide the baseSpeed
 	
-	this.mess = new Mess();
-	this.tetrisBlock;
-	this.blockPosition;			// A Point object
+		this.mess = new Mess();
+		this.tetrisBlock;
+		this.blockPosition;			// A Point object
     
     this.canvas = undefined;    // A jQuery object using 
     this.clearCanvas(gameareaDiv);
@@ -79,64 +80,93 @@ GameArea.prototype.clearCanvas = function(aDiv) {
     this.canvas = $('<div class="gameCanvas"></div>').appendTo(aDiv).width(pixelWidth).height(pixelHeight);
 }
 GameArea.prototype.hasCollided = function() {
-	var point = new Point(0, 0);
-	var matrix = this.tetrisBlock.matrix;
-	
+
+		this.tetrisBlock = new TetrisBlock();
+		var point = new Point(0, 0);
+		var matrix = this.tetrisBlock.matrix;
+		
     for (var i = 0; i < matrix.length; i++) {
-	    var blockRow = matrix[i];
-	    point.y = i + blockPosition.y;
-	    for (var j = 0; j < blockRow.length; j++) {
-		    point.x = j + blockPosition.x;
-		    if (mess.hasPoint(point)) {
-			    return true;
-		    }
-		    if (point.y > this.height) {
-			    return true;
-		    }
-	    }
-    }
-    return false;
+				var blockRow = matrix[i];
+				point.y = i + this.blockPosition.y;
+				for (var j = 0; j < blockRow.length; j++) {
+						point.x = j + this.blockPosition.x;
+						if (this.mess.hasPoint(point)) {
+								return true;
+						}
+						if (point.y > this.height) {
+								return true;
+						}
+						if (point.y == 20 ){
+								return true;
+						}
+				}
+		}
+		return false;
 }
 GameArea.prototype.isGameOver = function() {
 	return this.mess.getHeight() >= this.height;
 }
+
 GameArea.prototype.loop = function() {
-    if( this._start === false ){
+    if(! this._start ){
         this._start = true;
         this._newBlock();
+				this.loop();
     }else{
-        this.blockPosition.moveDown();
+				$('html').keydown(function(e){
+						switch(e.which){
+						case 37: //when right arrow key is pushed
+								//this.moveLeft();
+								GameArea.prototype.moveLeft();
+								break;
+						case 39: //when left arrow key is pushed
+								GameArea.prototype.moveRight();
+								break;
+						case 40: //when down arrow key is pushed
+								GameArea.prototype.moveDown();
+								break;
+						case 38: //when up arrow key is pushed
+								GameArea.prototype.rotate();
+								break;
+						}
+				});
+				if (GameArea.prototype.hasCollided()){
+						this._start = false;
+						this.loop();
+				}
     }
+	
+    //this.blockPosition.moveDown();
 	
 	if (this.hasCollided()) {
 		this.mess.add(tetrisBlock);
 		this._newBlock();
-	}
-	if (this.isGameOver()) {
-		return this;
 	}
 	
 	var loopPeriod = this.baseSpeed/this.speed;
 	
 	this._blockView.move(this.blockPosition, loopPeriod);
 
-	var that = this;
-	setTimeout(function(){that.loop()}, loopPeriod);
+	if (this.isGameOver()) {
+		return this;
+	}
+	//setTimeout(this.loop(), loopPeriod);
 };
 GameArea.prototype.moveRight = function() {
-	this.blockPosition.moveRight();
+		$('.PointView').animate({left: '+=10px'},100);
 };
 GameArea.prototype.moveLeft = function() {
-	this.blockPosition.moveLeft();
+		$('.PointView').animate({left: '-=10px'},100);
 };
 GameArea.prototype.moveDown = function() {
-    this.blockPosition.y += 1;
-    this._blockView.move(this.blockPosition, 100); //TODO
-	//this.blockPosition.moveDown();
+		//this.blockPosition.y += 1;
+		//this._blockView.move(this.blockPosition, 100); 
+		$('.PointView').animate({top: '+=10px'},100);
 };
 GameArea.prototype.rotate = function() {
 	// TODO rotate the displayed block
-	this.tetrisBlock.rotate();
+	//this.tetrisBlock.rotate();
+		$('.PointView').animate({rotate: '+=90deg'}, 100);
 };
 GameArea.prototype.deleteRow = function() {
     window.alert("Game area delete");
@@ -241,8 +271,8 @@ function PointView(pointSize, matrix, position) {
 	this._pointSize = pointSize;
 	this._enclosure = $('<div class="PointView"></div>');
 	this._enclosure.css({
-		position: 'relative',
-		top: position.y * this._pointSize,
+		position: 'absolute',
+		top:  position.y * this._pointSize,
 		left: position.x * this._pointSize
 	});
 	
@@ -273,10 +303,11 @@ PointView.prototype._addPoint = function(position) {
 }
 //moves the block to @position
 PointView.prototype.move = function(position, animationTime) { 
-	this._enclosure.animate({
-		top: position.y * this._pointSize, 
+	// TODO use animationTime
+    this._enclosure.animate({
+		top: position.y * this._pointSize,
 		left: position.x * this._pointSize
-	}, animationTime);
+    }, animationTime);
 }
 
 function Matrix(twoDimArray) {
@@ -315,8 +346,9 @@ function Point(x, y){
 }
 
 Point.prototype.moveDown = function () {
-	this.y++;
+		this.y++;
 }
+
 
 $(document).ready(function(){
     controller = new Controller();
