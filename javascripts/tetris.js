@@ -91,7 +91,7 @@ GameArea.prototype.hasCollided = function() {
 		    if (mess.hasPoint(point)) {
 			    return true;
 		    }
-		    if (point.y > this.height) {
+		    if (point.y + this.tetrisBlock.getHeight() >= this.height) {
 			    return true;
 		    }
 	    }
@@ -145,6 +145,9 @@ GameArea.prototype.deleteRow = function() {
 GameArea.prototype._newBlock = function() {
 	this.tetrisBlock = new TetrisBlock();
 	this.blockPosition = this.STARTPOSITION;
+	if (!(this._blockview === undefined)) {
+		this._blockview.remove();
+	}
 	this._blockView = new PointView(this.pointSize, this.tetrisBlock.matrix, this.blockPosition);
 	this.canvas.append(this._blockView._enclosure); // TODO not nice to use private property here.
 }
@@ -195,6 +198,9 @@ TetrisBlock.prototype.rotate =function() {
 TetrisBlock.prototype.getPoints = function() {
 	// TODO
 };
+TetrisBlock.prototype.getHeight = function () {
+	return matrix.countRows();
+}
 TetrisBlock.prototype.defaultBlocks = {
     "sBlock": [
         [0,1,1],
@@ -279,6 +285,10 @@ PointView.prototype.move = function(position, animationTime) {
 		left: position.x * this._pointSize
 	}, animationTime);
 }
+PointView.prototype.remove = function () {
+	this._enclosure.remove();
+}
+
 
 function Matrix(twoDimArray) {
 	this.matrix = twoDimArray; // Holds the actual matrix
@@ -300,6 +310,9 @@ Matrix.prototype.getPoints = function(position) {
 	    }
     }
     return points;
+}
+Matrix.prototype.countRows = function () {
+	return this.matrix.length;
 }
 
 /**
