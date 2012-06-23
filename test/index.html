@@ -1,0 +1,63 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" 
+                    "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+  <script src="../lib/jquery.js"></script>
+  <link rel="stylesheet" href="qunit.css" type="text/css" media="screen" />
+<script type="text/javascript" src="qunit.js"></script>
+<script type="text/javascript" src="../javascripts/tetris.js"></script>
+
+  <script>
+  $(document).ready(function(){
+
+module("GameArea");
+
+test("Initialization", function() { 
+	raises(function(){
+		new GameArea();
+	}, "Error was not thrown when GameArea was initialized without a gameareaDiv");
+	var div = $("<div></div>");
+	var gameArea = new GameArea(div);
+	ok(gameArea instanceof GameArea, "The created GameArea was not an instance of GameArea.");
+});
+
+module("Matrix");
+
+var twoDimList = [
+	[0,1],
+	[1,1],
+	[1,0]
+];
+var matrix = new Matrix(twoDimList);
+
+test("Create a matrix", function() {
+	ok(!(matrix instanceof String), "The created matrix was found to be.");
+	ok(matrix instanceof Matrix, "The created matrix was not a Matrix object.");
+});
+
+test("getPoints()", function() {
+	var points = matrix.getPoints();
+	ok(points.length == 4);
+	var expectedPoints = [new Point(1,0),new Point(0,1),new Point(1,1),new Point(0,2)];
+	
+	var pointsString = JSON.stringify(points);
+	
+	for (var i = 0; i < expectedPoints.length; i++) {
+		var pointString = JSON.stringify(expectedPoints[i]);
+		ok(pointsString.indexOf(pointString) != -1, pointsString + " did not contain " + pointString);
+	}
+});
+
+  });
+  </script>
+  
+</head>
+<body>
+	<h1 id="qunit-header">QUnit example</h1>
+	<h2 id="qunit-banner"></h2>
+	<div id="qunit-testrunner-toolbar"></div>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture">test markup, will be hidden</div>
+</body>
+</html>
