@@ -1,7 +1,7 @@
 /**
  * TetrisJS
  *
- *  A tetris game
+ * A tetris game
  */
 
 /**
@@ -13,7 +13,6 @@ var Controller = function() {
 	this._gameArea;
 };
 
-//Methods
 Controller.prototype.startstop = function() {
     if( $('#startstop').attr('value') == 'start' ){         //start game
         //this.gameArea = new GameArea($('#gamearea'));
