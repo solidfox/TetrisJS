@@ -306,6 +306,12 @@ PointView.prototype._addPoint = function(position) {
 }
 //moves the block to @position
 PointView.prototype.move = function(position, animationTime) { 
+	if (animationTime === undefined) {
+		animationTime = this._animationTime;
+	} else {
+		this._animationTime = animationTime;
+	}
+	this._enclosure.stop();
 	this._enclosure.animate({
 		top: position.y * this._pointSize, 
 		left: position.x * this._pointSize
