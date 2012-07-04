@@ -95,7 +95,12 @@ GameArea.prototype.clearCanvas = function(aDiv) {
     }
     var pixelWidth = this.pointSize * this.width;
     var pixelHeight = this.pointSize * this.height;
-    this.canvas = $('<div class="gameCanvas"></div>').appendTo(aDiv).width(pixelWidth).height(pixelHeight);
+    //this.canvas = $('<div class="gameCanvas"></div>').appendTo(aDiv).width(pixelWidth).height(pixelHeight);
+    this.canvas = $('<div class="gameCanvas"></div>').appendTo(aDiv).css({
+        width: pixelWidth,
+        height: pixelHeight,
+        margin: '-2px 0 0 0',   //to align bottom
+    });
 }
 /**
  * Determines if the currently moving tetris block has collided.
