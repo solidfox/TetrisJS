@@ -102,22 +102,37 @@ GameArea.prototype.clearCanvas = function(aDiv) {
  * Precondition: there has to be a moving tetris block.
  */
 GameArea.prototype.hasCollided = function() {
+    var debug = $("#debug p");
 	var point = new Point(0, 0);
-	var matrix = this.tetrisBlock.matrix;
-	
-    for (var i = 0; i < matrix.length; i++) {
-	    var blockRow = matrix[i];       
-	    point.y = i + blockPosition.y;
-	    for (var j = 0; j < blockRow.length; j++) {
-		    point.x = j + blockPosition.x;
-		    if (mess.hasPoint(point)) {
-			    return true;
-		    }
-		    if (point.y + this.tetrisBlock.getHeight() >= this.height) {
-			    return true;
-		    }
-	    }
+	//var matrix = this.tetrisBlock.matrix;
+    var bpoints = this.tetrisBlock.matrix.getPoints();  //The Points of the block
+
+    for (var i = 0; i < bpoints.length; i++){
+        //Calculate the absolute position for each point of the block
+        point.x = bpoints[i].x + this.blockPosition.x;
+        point.y = bpoints[i].y + this.blockPosition.y;
+        debug.text("point x:"+point.x+" point y:"+point.y);
+        //if (mess.hasPoint(point)){
+        //    return true;
+        //}
+        if (point.y >= this.height){
+            return true;
+        }
     }
+	
+    //for (var i = 0; i < matrix.length; i++) {
+	//    var blockRow = matrix[i];       
+	//    point.y = i + this.blockPosition.y;
+	//    for (var j = 0; j < blockRow.length; j++) {
+	//	    point.x = j + blockPosition.x;
+	//	    if (mess.hasPoint(point)) {
+	//		    return true;
+	//	    }
+	//	    if (point.y + this.tetrisBlock.getHeight() >= this.height) {
+	//		    return true;
+	//	    }
+	//    }
+    //}
     return false;
 }
 GameArea.prototype.isGameOver = function() {
@@ -132,6 +147,10 @@ GameArea.prototype.loop = function() {
         this.blockPosition.y++;
     }
 	
+	var loopPeriod = this.baseSpeed/this.speed;
+	
+	this._blockView.move(this.blockPosition, loopPeriod);
+
 	if (this.hasCollided()) {
 		this.mess.add(tetrisBlock);
 		this._newBlock();
@@ -140,9 +159,6 @@ GameArea.prototype.loop = function() {
 		return this;
 	}
 	
-	var loopPeriod = this.baseSpeed/this.speed;
-	
-	this._blockView.move(this.blockPosition, loopPeriod);
 
 	var that = this;
 	setTimeout(function(){that.loop()}, loopPeriod);
@@ -322,9 +338,15 @@ PointView.prototype.remove = function () {
 }
 
 
+/**
+ * Matrix
+ * 
+ * an easy way to express a block's shape
+ */
 function Matrix(twoDimArray) {
 	this.matrix = twoDimArray; // Holds the actual matrix
 }
+//gives the points
 Matrix.prototype.getPoints = function(position) {
 	if (position === undefined) {
 		position = new Point(0, 0);
