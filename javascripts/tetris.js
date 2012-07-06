@@ -115,7 +115,7 @@ GameArea.prototype.hasCollided = function() {
         //if (mess.hasPoint(point)){
         //    return true;
         //}
-        if (point.y >= this.height){
+        if (point.y >= this.height+1){
             return true;
         }
     }
@@ -152,7 +152,8 @@ GameArea.prototype.loop = function() {
 	this._blockView.move(this.blockPosition, loopPeriod);
 
 	if (this.hasCollided()) {
-		this.mess.add(tetrisBlock);
+		this.STARTPOSITION = new Point(this.width/2,0+2);
+		//this.mess.add(tetrisBlock);
 		this._newBlock();
 	}
 	if (this.isGameOver()) {
