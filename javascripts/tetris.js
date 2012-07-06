@@ -95,7 +95,12 @@ GameArea.prototype.clearCanvas = function(aDiv) {
     }
     var pixelWidth = this.pointSize * this.width;
     var pixelHeight = this.pointSize * this.height;
-    this.canvas = $('<div class="gameCanvas"></div>').appendTo(aDiv).width(pixelWidth).height(pixelHeight);
+    //this.canvas = $('<div class="gameCanvas"></div>').appendTo(aDiv).width(pixelWidth).height(pixelHeight);
+    this.canvas = $('<div class="gameCanvas"></div>').appendTo(aDiv).css({
+        width: pixelWidth,
+        height: pixelHeight,
+        margin: '-2px 0 0 0',   //to align bottom
+    });
 }
 /**
  * Determines if the currently moving tetris block has collided.
@@ -111,7 +116,7 @@ GameArea.prototype.hasCollided = function() {
         //Calculate the absolute position for each point of the block
         point.x = bpoints[i].x + this.blockPosition.x;
         point.y = bpoints[i].y + this.blockPosition.y;
-        debug.text("point x:"+point.x+" point y:"+point.y);
+        //debug.text("point x:"+point.x+" point y:"+point.y);
         //if (mess.hasPoint(point)){
         //    return true;
         //}
@@ -142,7 +147,7 @@ GameArea.prototype.loop = function() {
     if( this._start === false ){
         this._start = true;
         this._newBlock();
-        this.loop();
+        //this.loop();
     }else{
         this.blockPosition.y++;
     }
@@ -187,7 +192,7 @@ GameArea.prototype.deleteRow = function() {
 }
 GameArea.prototype._newBlock = function() {
 	this.tetrisBlock = new TetrisBlock();
-	this.blockPosition = this.STARTPOSITION;
+	this.blockPosition = new Point(this.width/2,0+2);
 	if (!(this._blockview === undefined)) {
 		this._blockview.remove();
 	}
@@ -196,8 +201,13 @@ GameArea.prototype._newBlock = function() {
 }
 
 
+/**
+ * Mess model
+ *
+ * The model of the bottom of gameArea
+ */
 function Mess() {
-	this.matrix = undefined;
+	this.matrix = undefined;    //the bottom matrix
 };
 
 Mess.prototype.hasCompleteRow = function() {
@@ -207,7 +217,7 @@ Mess.prototype.deleteRow = function() {
 };
 Mess.prototype.getPoints = function() {
 };
-Mess.prototype.add = function(tetrisBlock) { 
+Mess.prototype.add = function(tetrisBlock, blockPosition) { 
 	// TODO
 }
 Mess.prototype.getHeight = function() {
