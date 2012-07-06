@@ -116,7 +116,7 @@ GameArea.prototype.hasCollided = function() {
         //Calculate the absolute position for each point of the block
         point.x = bpoints[i].x + this.blockPosition.x;
         point.y = bpoints[i].y + this.blockPosition.y;
-        debug.text("point x:"+point.x+" point y:"+point.y);
+        //debug.text("point x:"+point.x+" point y:"+point.y);
         //if (mess.hasPoint(point)){
         //    return true;
         //}
@@ -147,7 +147,7 @@ GameArea.prototype.loop = function() {
     if( this._start === false ){
         this._start = true;
         this._newBlock();
-        this.loop();
+        //this.loop();
     }else{
         this.blockPosition.y++;
     }
@@ -157,7 +157,7 @@ GameArea.prototype.loop = function() {
 	this._blockView.move(this.blockPosition, loopPeriod);
 
 	if (this.hasCollided()) {
-		this.mess.add(tetrisBlock, this.blockPosition);
+		//this.mess.add(tetrisBlock, this.blockPosition);   //TODO
 		this._newBlock();
 	}
 	if (this.isGameOver()) {
@@ -191,7 +191,7 @@ GameArea.prototype.deleteRow = function() {
 }
 GameArea.prototype._newBlock = function() {
 	this.tetrisBlock = new TetrisBlock();
-	this.blockPosition = this.STARTPOSITION;
+	this.blockPosition = new Point(this.width/2,0+2);
 	if (!(this._blockview === undefined)) {
 		this._blockview.remove();
 	}
