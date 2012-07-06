@@ -157,7 +157,7 @@ GameArea.prototype.loop = function() {
 	this._blockView.move(this.blockPosition, loopPeriod);
 
 	if (this.hasCollided()) {
-		this.mess.add(tetrisBlock);
+		this.mess.add(tetrisBlock, this.blockPosition);
 		this._newBlock();
 	}
 	if (this.isGameOver()) {
@@ -200,8 +200,13 @@ GameArea.prototype._newBlock = function() {
 }
 
 
+/**
+ * Mess model
+ *
+ * The model of the bottom of gameArea
+ */
 function Mess() {
-	this.matrix = undefined;
+	this.matrix = undefined;    //the bottom matrix
 };
 
 Mess.prototype.hasCompleteRow = function() {
@@ -211,7 +216,7 @@ Mess.prototype.deleteRow = function() {
 };
 Mess.prototype.getPoints = function() {
 };
-Mess.prototype.add = function(tetrisBlock) { 
+Mess.prototype.add = function(tetrisBlock, blockPosition) { 
 	// TODO
 }
 Mess.prototype.getHeight = function() {
