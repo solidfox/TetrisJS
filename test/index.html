@@ -48,6 +48,20 @@ test("getPoints()", function() {
 	}
 });
 
+module("Mess");
+var mess = new Mess(10,20);
+
+test("Create a mes", function(){
+    ok(mess instanceof Mess, "The created mess was not a Mess Object.");
+});
+
+test("add()", function(){
+    var block = new TetrisBlock("sBlock");
+    var point = new Point(0,20);
+    rows = mess.add(block, point);
+    ok( rows[0] == 3 , "rows[0] was "+rows[0]);
+});
+
   });
   </script>
   

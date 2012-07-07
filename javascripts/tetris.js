@@ -78,7 +78,7 @@ function GameArea(gameareaDiv) {
 	this.baseSpeed = 1000; 		// Milliseconds for block to move down one row
 	this.speed = 1;				// Divisor by which to divide the baseSpeed
 	
-	this.mess = new Mess();
+	this.mess = new Mess(this.width, this.height);
 	this.tetrisBlock;
 	this.blockPosition;			// A Point object
     
@@ -116,7 +116,7 @@ GameArea.prototype.hasCollided = function() {
         //Calculate the absolute position for each point of the block
         point.x = bpoints[i].x + this.blockPosition.x;
         point.y = bpoints[i].y + this.blockPosition.y;
-        //debug.text("point x:"+point.x+" point y:"+point.y);
+        debug.text("point x:"+point.x+" point y:"+point.y);
         //if (mess.hasPoint(point)){
         //    return true;
         //}
@@ -205,9 +205,18 @@ GameArea.prototype._newBlock = function() {
  * Mess model
  *
  * The model of the bottom of gameArea
+ *
+ * Holds the status of each row by bitarray 
  */
-function Mess() {
+function Mess(width,height) {
 	this.matrix = undefined;    //the bottom matrix
+    this._rows = new Array(height);     //an array of bottom status
+    //initialize
+    for(i=0; i<height ; i++)
+    {
+        this._rows[i] = 0;
+    }
+    this._width = Math.pow(2,width) - 1;
 };
 
 Mess.prototype.hasCompleteRow = function() {
@@ -219,6 +228,17 @@ Mess.prototype.getPoints = function() {
 };
 Mess.prototype.add = function(tetrisBlock, blockPosition) { 
 	// TODO
+    var blockPoints = tetrisBlock.matrix.getPoints();
+    var x = 0;
+    var y = 0;
+    var add = 0;
+    for( i=0; i < blockPoints ; i++ ){
+        x = blockPoints[i].x + blockPosition.x;
+        y = this.height - (blockPoints[i].y + blockPosition.y);  //bottom is 0
+        add = Math.pow(2, x);
+        this._rows[y] = this._rows[y] & add;
+    }
+    return this._rows;
 }
 Mess.prototype.getHeight = function() {
 	// TODO
