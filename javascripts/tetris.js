@@ -54,6 +54,13 @@ Controller.prototype.bindKeys = function () {
 						break;
 			}
 	});    
+    $('html').keyup(function(e){
+        switch(e.which){
+            case 40: //when down arror key is released
+                self._gameArea.stopmoveDown();
+                break;
+        }       
+    });
 }
 
 
@@ -67,6 +74,7 @@ function GameArea(gameareaDiv) {
 	}
 
     this._start = false;    //The status whether the game has started
+    this._loop;             //loop object used for interrupt
 
 	this.width = 10;         // ten block width
 	this.height = 20;
@@ -167,7 +175,7 @@ GameArea.prototype.loop = function() {
 	
 
 	var that = this;
-	setTimeout(function(){that.loop()}, loopPeriod);
+	this._loop = setTimeout(function(){that.loop()}, loopPeriod);
 };
 GameArea.prototype.moveRight = function() {
 	this.blockPosition.x++;
@@ -178,8 +186,16 @@ GameArea.prototype.moveLeft = function() {
     this._blockView.move(this.blockPosition,100);
 };
 GameArea.prototype.moveDown = function() {
-    this.blockPosition.y++;
-    this._blockView.move(this.blockPosition, 100); 
+    //this.blockPosition.y++;
+    //this._blockView.move(this.blockPosition, 100); 
+    clearTimeout(this._loop);
+    this.speed = 10;
+    this.loop();
+};
+GameArea.prototype.stopmoveDown = function(){
+    clearTimeout(this._loop);
+    this.speed = 1;
+    this.loop();
 };
 
 GameArea.prototype.rotate = function() {
@@ -308,7 +324,7 @@ TetrisBlock.prototype.defaultBlocks = {
 }
 
 /**
- * The View Class
+ * View Class
  *
  * The view class to draw Points
  *
