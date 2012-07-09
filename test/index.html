@@ -76,16 +76,27 @@ test("add()", function(){
     for( i=0; i<rows.length ; i++){
         switch(i){
             case 18: 
-                ok( rows[i] == 6, "rwos["+i+"] : "+rows[i]);
+                ok( rows[i] == 6, "rwos["+i+"] :"+rows[i]);
                 break;
             case 19: 
-                ok( rows[i] == 3, "rwos["+i+"] : "+rows[i]);
+                ok( rows[i] == 3, "rwos["+i+"] :"+rows[i]);
                 break;
             default : 
-                ok( rows[i] == 0 , "rows["+i+"] : "+rows[i]);
+                ok( rows[i] == 0 , "rows["+i+"] :"+rows[i]);
                 break;
         }
     }
+});
+
+test("hasPoint()", function(){
+    var point = new Point(0,18);
+    rows = mess.add(tetrisBlock, point);
+    testone = new Point(0,19);
+    testtwo = new Point(2,19);
+    b1 = mess.hasPoint(testone);
+    b2 = mess.hasPoint(testtwo);
+    ok(b1 === true , "point (0,19): "+b1);
+    ok(b2 === false, "point (2,19): "+b2);
 });
 
   });
