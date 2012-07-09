@@ -105,6 +105,7 @@ GameArea.prototype.clearCanvas = function(aDiv) {
     var pixelHeight = this.pointSize * this.height;
     //this.canvas = $('<div class="gameCanvas"></div>').appendTo(aDiv).width(pixelWidth).height(pixelHeight);
     this.canvas = $('<div class="gameCanvas"></div>').appendTo(aDiv).css({
+        position: "relative",
         width: pixelWidth,
         height: pixelHeight,
         margin: '-2px 0 0 0',   //to align bottom
@@ -128,7 +129,7 @@ GameArea.prototype.hasCollided = function() {
         //if (mess.hasPoint(point)){
         //    return true;
         //}
-        if (point.y >= this.height+1){
+        if (point.y >= this.height-1){
             return true;
         }
     }
@@ -208,7 +209,7 @@ GameArea.prototype.deleteRow = function() {
 }
 GameArea.prototype._newBlock = function() {
 	this.tetrisBlock = new TetrisBlock();
-	this.blockPosition = new Point(this.width/2,0+2);
+	this.blockPosition = new Point(this.width/2,0);
 	if (!(this._blockview === undefined)) {
 		this._blockview.remove();
 	}
@@ -225,7 +226,7 @@ GameArea.prototype._newBlock = function() {
  * Holds the status of each row by bitarray 
  */
 function Mess(width,height) {
-	this.matrix = undefined;    //the bottom matrix
+	//this.matrix = undefined;    //the bottom matrix
     this._rows = new Array(height);     //an array of bottom status
     //initialize
     for(i=0; i<height ; i++)
@@ -248,11 +249,12 @@ Mess.prototype.add = function(tetrisBlock, blockPosition) {
     var x = 0;
     var y = 0;
     var add = 0;
-    for( i=0; i < blockPoints ; i++ ){
+    //add one point at a time
+    for( i=0; i < blockPoints.length ; i++ ){
         x = blockPoints[i].x + blockPosition.x;
-        y = this.height - (blockPoints[i].y + blockPosition.y);  //bottom is 0
+        y = blockPoints[i].y + blockPosition.y;
         add = Math.pow(2, x);
-        this._rows[y] = this._rows[y] & add;
+        this._rows[y] = this._rows[y] | add;
     }
     return this._rows;
 }

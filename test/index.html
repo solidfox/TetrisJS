@@ -48,6 +48,20 @@ test("getPoints()", function() {
 	}
 });
 
+module("TetrisBlock");
+var tetrisBlock = new TetrisBlock("sBlock");
+
+test("Create a TetrisBlock", function(){
+    ok(tetrisBlock instanceof TetrisBlock, "The created tetrisBlock was not a TetrisBlock Object.");
+});
+
+test("getPoints()", function(){
+    var points = tetrisBlock.matrix.getPoints();
+    for( i=0 ; i < points.length ; i++){
+        ok( points[i] instanceof Point, "Get Points retured x:"+points[i].x+" y:"+points[i].y);
+    }
+});
+
 module("Mess");
 var mess = new Mess(10,20);
 
@@ -56,10 +70,22 @@ test("Create a mes", function(){
 });
 
 test("add()", function(){
-    var block = new TetrisBlock("sBlock");
-    var point = new Point(0,20);
-    rows = mess.add(block, point);
-    ok( rows[0] == 3 , "rows[0] was "+rows[0]);
+    var point = new Point(0,18);
+    rows = mess.add(tetrisBlock, point);
+    ok( rows instanceof Array, "rows was not an Array");
+    for( i=0; i<rows.length ; i++){
+        switch(i){
+            case 18: 
+                ok( rows[i] == 6, "rwos["+i+"] : "+rows[i]);
+                break;
+            case 19: 
+                ok( rows[i] == 3, "rwos["+i+"] : "+rows[i]);
+                break;
+            default : 
+                ok( rows[i] == 0 , "rows["+i+"] : "+rows[i]);
+                break;
+        }
+    }
 });
 
   });
