@@ -198,8 +198,8 @@ GameArea.prototype.stopmoveDown = function(){
 
 GameArea.prototype.rotate = function() {
 	// TODO rotate the displayed block
-	//this.tetrisBlock.rotate();
-    $('.PointView').animate({rotate: '+=90deg'}, 100);
+	this.tetrisBlock.rotate();
+    //$('.PointView').animate({rotate: '+=90deg'}, 100);
 };
 GameArea.prototype.deleteRow = function() {
     window.alert("Game area delete");
@@ -284,7 +284,18 @@ function TetrisBlock(kind) {
 };
 
 TetrisBlock.prototype.rotate =function() {
-	// TODO
+	// TODO need to recalculate the blockPosition
+    var pre = this.matrix.matrix;   //previous matrix
+    var next = new Array(pre[0].length);    //the rotated matrix
+    for( n = 0 ; n < next.length ; n++ ){
+        var temp = new Array(pre.length);
+        for( i = 0 ; i < pre.length ; i++ ){
+            temp[i] = pre[i][next.length - 1 - n];
+        }
+        next[n] = temp;
+    }
+    this.matrix = new Matrix(next);
+    return this;
 };
 TetrisBlock.prototype.getPoints = function() {
 	// TODO

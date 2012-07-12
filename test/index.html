@@ -62,6 +62,17 @@ test("getPoints()", function(){
     }
 });
 
+test("rotate()", function(){
+    var preBlock = new TetrisBlock("sBlock");
+    var next = preBlock.rotate().matrix.matrix;
+    var hastobe = [[1,0],[1,1],[0,1]];
+    for( n=0 ; n < next.length ; n++ ){
+        for( i=0; i < next[n].length ; i++ ){
+            ok( next[n][i] == hastobe[n][i], "next[n][i] : "+next[n][i]);
+        }
+    }
+});
+
 module("Mess");
 var mess = new Mess(10,20);
 
