@@ -50,8 +50,71 @@ table {
 	border-spacing: 0;
 }
 
+/**
+ * clearfix
+ */
+.clearfix:after {
+  content: ".";
+  display: block;
+  clear: both;
+  height: 0;
+  visibility: hidden;
+}
+
+
+/**
+ * Game CSS
+ */
+
+body{
+    background-color: #181818;
+}
+
+#wrapper{
+    position: relative;
+    margin-top: 80px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 347px;
+}
+
+h1{
+    position: relative;
+    width: 347px;
+    height: 100px;
+}
+
+h1 img{
+    position: absolute;
+    left : 0px;
+    top : 0px;
+}
+
+#side{
+    float: right;
+    width: 100px;
+    height: 402px;
+}
+
+#startstop{
+    position: absolute;
+    bottom: 0px;
+    width: 100px;
+    height: 40px;
+    border: none;
+    background-image: -webkit-linear-gradient(top, #d2d2d2,#424242);
+    background-image: -moz-linear-gradient(bottom, #d2d2d2,#424242);
+    background-image: -o-linear-gradient(bottom, #d2d2d2,#424242);
+    background-image: -ms-linear-gradient(bottom, #d2d2d2,#424242);
+}
+
+#gamearea{
+    float: right;
+    width: 247px;
+}
+
 .gameCanvas{
-    border: 1px solid black;
+    border: 2px solid black;
 }
 
 .point {
