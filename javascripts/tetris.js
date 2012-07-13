@@ -199,7 +199,7 @@ GameArea.prototype.stopmoveDown = function(){
 GameArea.prototype.rotate = function() {
 	// TODO rotate the displayed block
 	this.tetrisBlock.rotate();
-    this._blockView.rotate();
+    this._blockView.rotate(this.tetrisBlock.matrix);
     //$('.PointView').animate({rotate: '+=90deg'}, 100);
 };
 GameArea.prototype.deleteRow = function() {
@@ -396,9 +396,18 @@ PointView.prototype.move = function(position, animationTime) {
 	}, animationTime);
 }
 //rotates block
-PointView.prototype.rotate = function(){
-    this._angle = (this._angle + 90) % 360;
-    this._enclosure.css("-webkit-transform", "rotate("+this._angle+"deg)");
+PointView.prototype.rotate = function(matrix){
+    this._enclosure.empty();
+    var point = matrix.getPoints();
+    for( i=0 ; i<point.length ; i++ ){
+        this._addPoint(point[i]);
+    }
+    //this._angle = (this._angle + 90) % 360;
+    //this._enclosure.css({
+    //    "transform-origin": "50% 50% 0",
+    //    "-webkit-transform-origin": "50% 50% 0",
+    //    "transform": "rotate("+this._angle+"deg)"
+    //});
 }
 PointView.prototype.remove = function () {
 	this._enclosure.remove();
