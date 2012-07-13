@@ -199,6 +199,7 @@ GameArea.prototype.stopmoveDown = function(){
 GameArea.prototype.rotate = function() {
 	// TODO rotate the displayed block
 	this.tetrisBlock.rotate();
+    this._blockView.rotate();
     //$('.PointView').animate({rotate: '+=90deg'}, 100);
 };
 GameArea.prototype.deleteRow = function() {
@@ -274,13 +275,13 @@ function TetrisBlock(kind) {
         var keys = Object.keys(this.defaultBlocks);
         var randomIndex = Math.floor( Math.random() * keys.length );
         this.name = keys[randomIndex];
-        this.matrix = this.defaultBlocks[keys[randomIndex]];
+        matrix = this.defaultBlocks[keys[randomIndex]];
     } else {
         this.name = kind;
-        this.matrix = this.defaultBlocks[kind];
+        matrix = this.defaultBlocks[kind];
     }   
     //Get the points of blocks 
-    this.matrix = new Matrix(this.matrix);
+    this.matrix = new Matrix(matrix);
 };
 
 TetrisBlock.prototype.rotate =function() {
@@ -337,7 +338,7 @@ TetrisBlock.prototype.defaultBlocks = {
 }
 
 /**
- * View Class
+ * View class
  *
  * The view class to draw Points
  *
@@ -348,6 +349,7 @@ TetrisBlock.prototype.defaultBlocks = {
 function PointView(pointSize, matrix, position) {
 	
 	this._pointSize = pointSize;
+    this._angle = 0;
 	this._enclosure = $('<div class="PointView"></div>');
 	this._enclosure.css({
 		position: 'absolute',
@@ -392,6 +394,11 @@ PointView.prototype.move = function(position, animationTime) {
 		top: position.y * this._pointSize, 
 		left: position.x * this._pointSize
 	}, animationTime);
+}
+//rotates block
+PointView.prototype.rotate = function(){
+    this._angle = (this._angle + 90) % 360;
+    this._enclosure.css("-webkit-transform", "rotate("+this._angle+"deg)");
 }
 PointView.prototype.remove = function () {
 	this._enclosure.remove();
