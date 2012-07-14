@@ -16,14 +16,15 @@ var Controller = function() {
 //Methods
 Controller.prototype.startstop = function() {
     if( $('#startstop').attr('value') == 'start' ){         //start game
-        //this.gameArea = new GameArea($('#gamearea'));
         this._getGameArea(); // asserts that _gameArea is initiated.
         this.bindKeys();
         this._gameArea.loop();
         $('#startstop').attr('value','pause');
     }else if( $('#startstop').attr('value') == 'pause' ){   //pause game
-        //TODO make an function to pause gameArea
-        $('#startstop').attr('value', 'start');
+        this._gameArea.pause();
+        $('#startstop').attr('value', 'restart');
+    }else if( $('#startstop').attr('value') == 'restart' ){
+        this._gameArea.loop();
     }
 };
 Controller.prototype.gameOver = function() {
@@ -161,7 +162,9 @@ GameArea.prototype.loop = function() {
         //this.loop();
     }else if (this.hasCollided()) {
 		this.STARTPOSITION = new Point(this.width/2,0+2);
+        this._blockView.stopped(this.blockPosition);
 		this.mess.add(this.tetrisBlock, this.blockPosition);
+        this.mess.check();  //check if there is a row that has completed
 		this._newBlock();
 	}
     this.blockPosition.y++;
@@ -195,6 +198,9 @@ GameArea.prototype.stopmoveDown = function(){
     this.speed = 1;
     this.loop();
 };
+GameArea.prototype.pause = function(){
+    clearTimeout(this._loop);
+};
 
 GameArea.prototype.rotate = function() {
 	// TODO rotate the displayed block
@@ -225,19 +231,25 @@ GameArea.prototype._newBlock = function() {
  */
 function Mess(width,height) {
 	//this.matrix = undefined;    //the bottom matrix
-    this._rows = new Array(height);     //an array of bottom status
+    this._width = Math.pow(2,width) - 1;
+    this._height = height;
+    this._rows = new Array(this._height);     //an array of bottom status
     //initialize
     for(i=0; i<height ; i++)
     {
         this._rows[i] = 0;
     }
-    this._width = Math.pow(2,width) - 1;
 };
 
 Mess.prototype.hasCompleteRow = function() {
 };
-Mess.prototype.deleteRow = function() {
-	window.alert("Mess delete");
+Mess.prototype.deleteRow = function(i) {
+    //TODO
+    var newRows = [0];
+    newRows.push(this._rows.slice(0,i-1));
+    newRows.push(this._rows.slice(i,this._height));
+    $("div[data-row='"+i+"']").remove();
+    this._rows = newRows;
 };
 Mess.prototype.getPoints = function() {
 };
@@ -258,6 +270,16 @@ Mess.prototype.add = function(tetrisBlock, blockPosition) {
 Mess.prototype.hasPoint = function(point){
     var test = Math.pow(2,point.x);
     return (this._rows[point.y] & test) != 0;
+}
+Mess.prototype.check = function(){
+    var list = new Array();
+    for( i = 0; i < this._height ; i++){
+        if( this._rows[i] >= this._width){
+            list.push(i);
+            //this.deleteRow(i);
+        }
+    }
+    return list;
 }
 Mess.prototype.getHeight = function() {
 	// TODO
@@ -356,12 +378,13 @@ function PointView(pointSize, matrix, position) {
 		top: position.y * this._pointSize,
 		left: position.x * this._pointSize
 	});
+    this._points = new Array(); //an array of each points
 	
 	
 	var points = matrix.getPoints();
 	
 	for (var i = 0; i < points.length; i++) {
-		this._addPoint(points[i])
+		this._points.push(this._addPoint(points[i]));
 	}
 }
 
@@ -376,11 +399,13 @@ PointView.prototype._drawnPoint = function() {
 }
 PointView.prototype._addPoint = function(position) {
 	var point = this._drawnPoint();
+    point.attr("data-relative-row",position.y);
 	point.css({
 		top: (position.y * this._pointSize),
 		left: (position.x * this._pointSize)
 	});
 	this._enclosure.append(point);
+    return point;
 }
 //moves the block to @position
 PointView.prototype.move = function(position, animationTime) { 
@@ -394,6 +419,13 @@ PointView.prototype.move = function(position, animationTime) {
 		top: position.y * this._pointSize, 
 		left: position.x * this._pointSize
 	}, animationTime);
+}
+PointView.prototype.stopped = function(position){
+    var x = 0;
+    for( i=0; i < this._points.length ; i++ ){
+        x = this._points[i].attr("data-relative-row");
+        this._points[i].attr("data-row", position.y + parseInt(x));
+    }
 }
 //rotates block
 PointView.prototype.rotate = function(matrix){
