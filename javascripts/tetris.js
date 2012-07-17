@@ -42,16 +42,16 @@ Controller.prototype.bindKeys = function () {
             switch(e.which){
 				case 37: //when right arrow key is pushed
 						//this.moveLeft();
-						self._gameArea.moveLeft();
+						self._gameArea.leftKey();
 						break;
 				case 39: //when left arrow key is pushed
-						self._gameArea.moveRight();
+						self._gameArea.rightKey();
 						break;
 				case 40: //when down arrow key is pushed
-						self._gameArea.moveDown();
+						self._gameArea.downKey();
 						break;
 				case 38: //when up arrow key is pushed
-						self._gameArea.rotate();
+						self._gameArea.rotateKey();
 						break;
 			}
 	});    
@@ -159,15 +159,15 @@ GameArea.prototype.loop = function() {
     if( this._start === false ){
         this._start = true;
         this._newBlock();
-        //this.loop();
-    }else if (this.hasCollided()) {
+    } else if (this.hasCollided()) {
 		this.STARTPOSITION = new Point(this.width/2,0+2);
         this._blockView.stopped(this.blockPosition);
 		this.mess.add(this.tetrisBlock, this.blockPosition);
         this.mess.check();  //check if there is a row that has completed
-		this._newBlock();
-	}
-    this.blockPosition.y++;
+        this._newBlock();
+    }else{
+        this.blockPosition.y++;
+    }
 	
 	
 	this._blockView.move(this.blockPosition, loopPeriod);
@@ -178,11 +178,11 @@ GameArea.prototype.loop = function() {
 	
 	this._loop = setTimeout(function(){that.loop()}, loopPeriod);
 };
-GameArea.prototype.moveRight = function() {
+GameArea.prototype.rightKey = function() {
 	this.blockPosition.x++;
     this._blockView.move(this.blockPosition,100);
 };
-GameArea.prototype.moveLeft = function() {
+GameArea.prototype.leftKey = function() {
 	this.blockPosition.x--;
     this._blockView.move(this.blockPosition,100);
 };
@@ -202,7 +202,7 @@ GameArea.prototype.pause = function(){
     clearTimeout(this._loop);
 };
 
-GameArea.prototype.rotate = function() {
+GameArea.prototype.rotateKey = function() {
 	// TODO rotate the displayed block
 	this.tetrisBlock.rotate();
     this._blockView.rotate(this.tetrisBlock.matrix);
@@ -218,7 +218,7 @@ GameArea.prototype._newBlock = function() {
 		this._blockview.remove();
 	}
 	this._blockView = new PointView(this.pointSize, this.tetrisBlock.matrix, this.blockPosition);
-	this.canvas.append(this._blockView._enclosure); // TODO not nice to use private property here.
+	this.canvas.append(this._blockView._enclosure); // TODO uncool to use private property here.
 }
 
 
@@ -488,10 +488,6 @@ Matrix.prototype.countRows = function () {
 function Point(x, y){
     this.x = x;
     this.y = y;
-}
-
-Point.prototype.moveDown = function () {
-	this.y++;
 }
 
 $(document).ready(function(){
