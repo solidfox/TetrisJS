@@ -96,11 +96,10 @@ PointView.prototype.stopped = function(position){
 /**
  * Rotates view
  */
-PointView.prototype.rotate = function(matrix){
+PointView.prototype.rotate = function(points){
     this._enclosure.empty();
-    var point = matrix.getPoints();
-    for( i=0 ; i<point.length ; i++ ){
-        this._addPoint(point[i]);
+    for( i=0 ; i<points.length ; i++ ){
+        this._addPoint(points[i]);
     }
     //this._angle = (this._angle + 90) % 360;
     //this._enclosure.css({

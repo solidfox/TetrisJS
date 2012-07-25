@@ -148,7 +148,7 @@ GameArea.prototype.pause = function(){
 
 GameArea.prototype.rotateKey = function() {
 	this.tetrisBlock.rotate();
-    this._blockView.rotate(this.tetrisBlock.matrix);
+    this._blockView.rotate(this.tetrisBlock.getPoints());
     //$('.PointView').animate({rotate: '+=90deg'}, 100);
 };
 GameArea.prototype.deleteRow = function() {
