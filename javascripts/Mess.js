@@ -28,6 +28,7 @@ Mess.prototype.deleteRow = function(i) {
     this._rows = newRows;
 };
 Mess.prototype.getPoints = function() {
+	// TODO
 };
 Mess.prototype.add = function(tetrisBlock, blockPosition) { 
     var blockPoints = tetrisBlock.getPoints();
