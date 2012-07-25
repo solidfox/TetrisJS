@@ -7,7 +7,7 @@
  * @param array     the matrix that defines the block
  * @param position  the position(left.top) to draw the block
  */
-function PointView(pointSize, matrix, position) {
+function PointView(pointSize, points, position) {
 	
 	this._position = new Point(position);
 	this._pointSize = pointSize;
@@ -18,14 +18,17 @@ function PointView(pointSize, matrix, position) {
 		top: position.y * this._pointSize,
 		left: position.x * this._pointSize
 	});
-    this._points = matrix.getPoints(); //an array of points
-	
-	var points = this._points;
+    this._points = points; //an array of points
+    
+    
 	for (var i = 0; i < points.length; i++) {
 		this._addPoint(points[i]);
 	}
 }
 
+PointView.prototype._getPointElements = function() {
+	return $(this._enclosure).children();
+}
 PointView.prototype._drawnPoint = function() {
 	var div = $('<div class="point moving"></div>');
 	div.css({
@@ -79,13 +82,16 @@ PointView.prototype.move = function(position, animationTime) {
 	this._position = new Point(position);
 }
 
+/*
 PointView.prototype.stopped = function(position){
+	var pointElements = this._getPointElements();
     var x = 0;
-    for( i=0; i < this._points.length ; i++ ){
-        x = this._points[i].attr("data-relative-row");
-        this._points[i].attr("data-row", position.y + parseInt(x));
+    for( i=0; i < pointElements.length ; i++ ){
+        x = pointElements[i].attr("data-relative-row");
+        pointElements[i].attr("data-row", position.y + parseInt(x));
     }
 }
+*/
 
 /**
  * Rotates view

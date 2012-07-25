@@ -53,7 +53,7 @@ GameArea.prototype.hasCollided = function() {
     var debug = $("#debug p");
 	var point = new Point(0, 0);
 	//var matrix = this.tetrisBlock.matrix;
-    var bpoints = this.tetrisBlock.matrix.getPoints();  //The Points of the block
+    var bpoints = this.tetrisBlock.getPoints();  //The Points of the block
 
     for (var i = 0; i < bpoints.length; i++){
         //Calculate the absolute position for each point of the block
@@ -65,6 +65,9 @@ GameArea.prototype.hasCollided = function() {
         }
         if (point.y >= this.height){
             return true;
+        }
+        if (point.x < 0 || point.x >= this.width) {
+	        return true;
         }
     }
 	
@@ -94,7 +97,7 @@ GameArea.prototype.loop = function() {
         this._newBlock();
     } else if (this.hasCollided()) {
 		this.STARTPOSITION = new Point(this.width/2,0+2);
-        this._blockView.stopped(this.blockPosition);
+//        this._blockView.stopped(this.blockPosition);
 		this.mess.add(this.tetrisBlock, this.blockPosition);
         this.mess.check();  //check if there is a row that has completed
         this._newBlock();
@@ -106,27 +109,35 @@ GameArea.prototype.loop = function() {
 	this._blockView.move(this.blockPosition, loopPeriod);
 
 	if (this.isGameOver()) {
-		return this;
+		alert("Game Over");
 	}
 	
 	this._loop = setTimeout(function(){that.loop()}, loopPeriod);
 };
 GameArea.prototype.rightKey = function() {
 	this.blockPosition.x++;
-    this._blockView.move(this.blockPosition,100);
+	if (this.hasCollided()) {
+		this.blockPosition.x--;
+	} else {
+	    this._blockView.move(this.blockPosition,100);		
+	}
 };
 GameArea.prototype.leftKey = function() {
 	this.blockPosition.x--;
-    this._blockView.move(this.blockPosition,100);
+    if (this.hasCollided()) {
+		this.blockPosition.x++;
+	} else {
+	    this._blockView.move(this.blockPosition,100);		
+	}
 };
-GameArea.prototype.moveDown = function() {
+GameArea.prototype.downKey = function() {
     //this.blockPosition.y++;
     //this._blockView.move(this.blockPosition, 100); 
     clearTimeout(this._loop);
     this.speed = 10;
     this.loop();
 };
-GameArea.prototype.stopmoveDown = function(){
+GameArea.prototype.downKeyRelease = function(){
     clearTimeout(this._loop);
     this.speed = 1;
     this.loop();
@@ -149,6 +160,6 @@ GameArea.prototype._newBlock = function() {
 	if (!(this._blockview === undefined)) {
 		this._blockview.remove();
 	}
-	this._blockView = new PointView(this.pointSize, this.tetrisBlock.matrix, this.blockPosition);
+	this._blockView = new PointView(this.pointSize, this.tetrisBlock.getPoints(), this.blockPosition);
 	this.canvas.append(this._blockView._enclosure); // TODO uncool to use private property here.
 }

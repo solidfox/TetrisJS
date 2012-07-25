@@ -52,7 +52,7 @@ Controller.prototype.bindKeys = function () {
     $('html').keyup(function(e){
         switch(e.which){
             case 40: //when down arror key is released
-                self._gameArea.stopmoveDown();
+                self._gameArea.downKeyRelease();
                 break;
         }       
     });

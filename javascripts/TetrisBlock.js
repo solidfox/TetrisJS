@@ -15,25 +15,16 @@ function TetrisBlock(kind) {
         matrix = this.defaultBlocks[kind];
     }   
     //Get the points of blocks 
-    this.matrix = new Matrix(matrix);
+    this._matrix = new Matrix(matrix);
 };
 
 TetrisBlock.prototype.rotate =function() {
 	// TODO need to recalculate the blockPosition
-    var pre = this.matrix.matrix;   //previous matrix
-    var next = new Array(pre[0].length);    //the rotated matrix
-    for( n = 0 ; n < next.length ; n++ ){
-        var temp = new Array(pre.length);
-        for( i = 0 ; i < pre.length ; i++ ){
-            temp[i] = pre[i][next.length - 1 - n];
-        }
-        next[n] = temp;
-    }
-    this.matrix = new Matrix(next);
+    this._matrix.rotate();
     return this;
 };
 TetrisBlock.prototype.getPoints = function() {
-	// TODO
+	return this._matrix.getPoints();
 };
 TetrisBlock.prototype.getHeight = function () {
 	return matrix.countRows();
