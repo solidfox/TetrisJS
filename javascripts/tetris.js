@@ -64,7 +64,6 @@ Controller.prototype.bindKeys = function () {
     });
 }
 
-
 /**
  * GameArea 
  * @param gameareaDiv jQuery object for the gamearea
@@ -489,6 +488,8 @@ function Point(x, y){
     this.x = x;
     this.y = y;
 }
+
+
 
 $(document).ready(function(){
     controller = new Controller();
