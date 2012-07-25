@@ -202,7 +202,6 @@ GameArea.prototype.pause = function(){
 };
 
 GameArea.prototype.rotateKey = function() {
-	// TODO rotate the displayed block
 	this.tetrisBlock.rotate();
     this._blockView.rotate(this.tetrisBlock.matrix);
     //$('.PointView').animate({rotate: '+=90deg'}, 100);
@@ -288,7 +287,7 @@ Mess.prototype.getHeight = function() {
 /**
  * Tetris Block Model
  *
- * The model that defines he blocks
+ * The model that defines the blocks
  * @param kind string the blocktype you want.
  */
 function TetrisBlock(kind) {
@@ -369,6 +368,7 @@ TetrisBlock.prototype.defaultBlocks = {
  */
 function PointView(pointSize, matrix, position) {
 	
+	this._position = new Point(position);
 	this._pointSize = pointSize;
     this._angle = 0;
 	this._enclosure = $('<div class="PointView"></div>');
@@ -377,8 +377,7 @@ function PointView(pointSize, matrix, position) {
 		top: position.y * this._pointSize,
 		left: position.x * this._pointSize
 	});
-    this._points = new Array(); //an array of each points
-	
+    this._points = new Array(); //an array of points
 	
 	var points = matrix.getPoints();
 	
@@ -406,19 +405,40 @@ PointView.prototype._addPoint = function(position) {
 	this._enclosure.append(point);
     return point;
 }
-//moves the block to @position
-PointView.prototype.move = function(position, animationTime) { 
+
+/** 
+ * Moves the block to @param position
+ */
+PointView.prototype.move = function(position, animationTime) {
+	
+	// Was an animation time specified?
 	if (animationTime === undefined) {
 		animationTime = this._animationTime;
 	} else {
 		this._animationTime = animationTime;
 	}
-	this._enclosure.stop();
-	this._enclosure.animate({
-		top: position.y * this._pointSize, 
-		left: position.x * this._pointSize
-	}, animationTime);
+	
+	// Are we moving sideways or down?
+	if (position.x != this._position.x) {
+		this._enclosure.animate({
+			left: position.x * this._pointSize
+		}, {
+			duration: animationTime,
+			queue: false
+		});
+	}
+	if (position.y != this._position.y) {
+		this._enclosure.animate({
+			top: position.y * this._pointSize,
+		}, {
+			duration: animationTime,
+			queue: false
+		});
+	}
+	
+	this._position = new Point(position);
 }
+
 PointView.prototype.stopped = function(position){
     var x = 0;
     for( i=0; i < this._points.length ; i++ ){
@@ -426,7 +446,10 @@ PointView.prototype.stopped = function(position){
         this._points[i].attr("data-row", position.y + parseInt(x));
     }
 }
-//rotates block
+
+/**
+ * Rotates view
+ */
 PointView.prototype.rotate = function(matrix){
     this._enclosure.empty();
     var point = matrix.getPoints();
@@ -479,14 +502,19 @@ Matrix.prototype.countRows = function () {
 /**
  * Point
  * 
- * Expresses the position of each material
+ * Represents a position
  * 
- * @param int   x position
- * @param int   y position
+ * @param x   x position or a Point object from which to copy coordinates
+ * @param y   y position
  */
 function Point(x, y){
-    this.x = x;
-    this.y = y;
+	if (x instanceof Point) {
+		this.x = x.x;
+		this.y = x.y;
+	} else {
+	    this.x = x;
+	    this.y = y;
+	}
 }
 
 

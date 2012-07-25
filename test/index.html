@@ -9,6 +9,15 @@
 
   <script>
   $(document).ready(function(){
+  
+module("Point");
+
+test("Initialize with another point", function() {
+	var a = new Point(new Point(4,8));
+	var b = new Point(a);
+	ok(a.x = 4 && a.y == 8);
+	ok(a != b, "A point created from another point turned out to be the same object.");
+});
 
 module("GameArea");
 
