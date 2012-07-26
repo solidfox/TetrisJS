@@ -9,6 +9,7 @@ function GameArea(gameareaDiv) {
 
     this._start = false;    //The status whether the game has started
     this._loop;             //loop object used for interrupt
+    this._loopRunning = false;
 
 	this.width = 10;         // ten block width
 	this.height = 20;
@@ -90,13 +91,13 @@ GameArea.prototype.isGameOver = function() {
 	return this.mess.getHeight() >= this.height;
 }
 GameArea.prototype.loop = function() {
+	this._loopRunning = true;
 	var loopPeriod = this.baseSpeed/this.speed;
 	var that = this;
     if( this._start === false ){
         this._start = true;
         this._newBlock();
     } else if (this.hasCollided()) {
-		this.STARTPOSITION = new Point(this.width/2,0+2);
 //        this._blockView.stopped(this.blockPosition);
 		this.mess.add(this.tetrisBlock, this.blockPosition);
         this.mess.check();  //check if there is a row that has completed
@@ -113,6 +114,23 @@ GameArea.prototype.loop = function() {
 	}
 	
 	this._loop = setTimeout(function(){that.loop()}, loopPeriod);
+	this._loopRunning = false;
+};
+GameArea.prototype.startLoop = function(){
+	if (!this._loopRunning && this._loop === undefined) {
+		this.loop();
+	}
+};
+GameArea.prototype.stopLoop = function(){
+	var self = this;
+	if (!(this._loop === undefined)) {
+		if (!this._loopRunning) {
+			clearTimeout(this._loop);
+			this._loop = undefined;	
+		} else {
+			setTimeout(function () {self.stopLoop();}, 10);
+		}
+	}
 };
 GameArea.prototype.rightKey = function() {
 	this.blockPosition.x++;
@@ -133,14 +151,14 @@ GameArea.prototype.leftKey = function() {
 GameArea.prototype.downKey = function() {
     //this.blockPosition.y++;
     //this._blockView.move(this.blockPosition, 100); 
-    clearTimeout(this._loop);
-    this.speed = 10;
-    this.loop();
+	this.stopLoop();
+	this.speed = 10;
+    this.startLoop();
 };
 GameArea.prototype.downKeyRelease = function(){
-    clearTimeout(this._loop);
+	this.stopLoop();
     this.speed = 1;
-    this.loop();
+    this.startLoop();
 };
 GameArea.prototype.pause = function(){
     clearTimeout(this._loop);
