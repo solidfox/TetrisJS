@@ -13,9 +13,6 @@ function Mess(width,height) {
     for(i=0; i<height ; i++)
     {
         this._rows[i] = new Array(this._width);
-        for(var j = 0; j < width; j++){
-            this._rows[i][j] = 0;
-        }
     }
 };
 

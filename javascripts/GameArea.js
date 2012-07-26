@@ -60,10 +60,10 @@ GameArea.prototype.hasCollided = function() {
         point.x = bpoints[i].x + this.blockPosition.x;
         point.y = bpoints[i].y + this.blockPosition.y + 1;  //next point
         debug.text("point x:"+point.x+" point y:"+point.y);
-        if (this.mess.hasPoint(point)){
+        if (point.y >= this.height){
             return true;
         }
-        if (point.y >= this.height){
+        if (this.mess.hasPoint(point)){
             return true;
         }
         if (point.x < 0 || point.x >= this.width) {
