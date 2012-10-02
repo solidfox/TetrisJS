@@ -67,7 +67,7 @@ table {
  */
 
 body{
-    background-color: #ffffff;
+    background-color: #fff;
 }
 
 #wrapper{
@@ -118,5 +118,5 @@ h1 img{
 }
 
 .point {
-	background: #000000;
+	background: #000;
 }
