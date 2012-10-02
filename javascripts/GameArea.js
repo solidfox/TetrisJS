@@ -21,7 +21,7 @@ function GameArea(gameareaDiv) {
 	this.baseSpeed = 1000; 		// Milliseconds for block to move down one row
 	this.speed = 1;				// Divisor by which to divide the baseSpeed
 	
-	this.mess = new Mess(this.width, this.height);
+	this.mess = new Mess(this.width, this.height, this.pointSize);
 	this.tetrisBlock;
 	this.blockPosition;			// A Point object
     
@@ -94,13 +94,18 @@ GameArea.prototype.loop = function() {
 	this._loopRunning = true;
 	var loopPeriod = this.baseSpeed/this.speed;
 	var that = this;
+    var list;
     if( this._start === false ){
         this._start = true;
         this._newBlock();
     } else if (this.hasCollided()) {
 //        this._blockView.stopped(this.blockPosition);
 		this.mess.add(this.tetrisBlock, this.blockPosition);
-        this.mess.check();  //check if there is a row that has completed
+        this._blockView.remove();
+        list = this.mess.check();  //check if there is a row that has completed
+        for( var i = 0; i < list.length ; i++ ){
+            this.mess.deleteRow(list[i]);
+        }
         this._newBlock();
     }else{
         this.blockPosition.y++;

@@ -31,7 +31,7 @@ PointView.prototype._getPointElements = function() {
 	return $(this._enclosure).children();
 }
 PointView.prototype._drawnPoint = function() {
-	var div = $('<div class="point moving"></div>');
+	var div = $('<div class="point"></div>');
 	div.css({
 		position: 'absolute',
 		height: this._pointSize, 

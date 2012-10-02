@@ -67,7 +67,7 @@ table {
  */
 
 body{
-    background-color: #fff;
+    background-color: #000;
 }
 
 #wrapper{
@@ -114,7 +114,7 @@ h1 img{
 }
 
 .gameCanvas{
-    border: 2px solid black;
+    border: 2px solid white;
 }
 
 .point {
