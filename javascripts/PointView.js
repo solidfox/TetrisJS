@@ -84,6 +84,22 @@ PointView.prototype.move = function(position, animationTime) {
 	this._position = new Point(position);
 }
 
+/**
+ * Interrupt animation
+ * stop animating and move the block to the 
+ * right position
+ *
+ * @param position  the position of the point
+ */
+PointView.prototype.interrupt = function(position) {
+    this._enclosure.stop();
+	this._enclosure.css({
+		position: 'absolute',
+		top: position.y * this._pointSize,
+		left: position.x * this._pointSize
+	});
+}
+
 /*
 PointView.prototype.stopped = function(position){
 	var pointElements = this._getPointElements();

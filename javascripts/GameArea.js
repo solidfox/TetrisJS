@@ -116,21 +116,23 @@ GameArea.prototype.loop = function() {
 	this._loop = setTimeout(function(){that.loop()}, loopPeriod);
 	this._loopRunning = false;
 };
-GameArea.prototype.startLoop = function(){
-	if (!this._loopRunning && this._loop === undefined) {
-		this.loop();
-	}
-};
+//GameArea.prototype.startLoop = function(){
+//	if (!this._loopRunning && this._loop === undefined) {
+//		this.loop();
+//	}
+//};
 GameArea.prototype.stopLoop = function(){
-	var self = this;
-	if (!(this._loop === undefined)) {
-		if (!this._loopRunning) {
-			clearTimeout(this._loop);
-			this._loop = undefined;	
-		} else {
-			setTimeout(function () {self.stopLoop();}, 10);
-		}
-	}
+	//var self = this;
+	//if (!(this._loop === undefined)) {
+	//	if (!this._loopRunning) {
+	//		clearTimeout(this._loop);
+	//		this._loop = undefined;	
+	//	} else {
+	//		setTimeout(function () {self.stopLoop();}, 10);
+	//	}
+	//}
+    clearTimeout(this._loop);
+    this._blockView.interrupt(this.blockPosition);
 };
 GameArea.prototype.rightKey = function() {
 	this.blockPosition.x++;
@@ -151,14 +153,18 @@ GameArea.prototype.leftKey = function() {
 GameArea.prototype.downKey = function() {
     //this.blockPosition.y++;
     //this._blockView.move(this.blockPosition, 100); 
-	this.stopLoop();
-	this.speed = 10;
-    this.startLoop();
+    if( this.speed != 10){
+        this.stopLoop();
+        this.speed = 10;
+        this.loop();
+    }
 };
 GameArea.prototype.downKeyRelease = function(){
-	this.stopLoop();
-    this.speed = 1;
-    this.startLoop();
+    if( this.speed != 1 ){
+        this.stopLoop();
+        this.speed = 1;
+        this.loop();
+    }
 };
 GameArea.prototype.pause = function(){
     clearTimeout(this._loop);
