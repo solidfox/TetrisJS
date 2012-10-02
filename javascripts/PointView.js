@@ -6,8 +6,9 @@
  * @param int       pointSize the size of each point
  * @param array     the matrix that defines the block
  * @param position  the position(left.top) to draw the block
+ * @param color     the color of the block
  */
-function PointView(pointSize, points, position) {
+function PointView(pointSize, points, position, color) {
 	
 	this._position = new Point(position);
 	this._pointSize = pointSize;
@@ -22,7 +23,7 @@ function PointView(pointSize, points, position) {
     
     
 	for (var i = 0; i < points.length; i++) {
-		this._addPoint(points[i]);
+		this._addPoint(points[i], color);
 	}
 }
 
@@ -38,12 +39,13 @@ PointView.prototype._drawnPoint = function() {
 	});
 	return div;
 }
-PointView.prototype._addPoint = function(position) {
+PointView.prototype._addPoint = function(position, color) {
 	var point = this._drawnPoint();
     point.attr("data-relative-row",position.y);
 	point.css({
 		top: (position.y * this._pointSize),
-		left: (position.x * this._pointSize)
+		left: (position.x * this._pointSize),
+        background : color,
 	});
 	this._enclosure.append(point);
     return point;
@@ -96,10 +98,10 @@ PointView.prototype.stopped = function(position){
 /**
  * Rotates view
  */
-PointView.prototype.rotate = function(points){
+PointView.prototype.rotate = function(points, color){
     this._enclosure.empty();
     for( i=0 ; i<points.length ; i++ ){
-        this._addPoint(points[i]);
+        this._addPoint(points[i], color);
     }
     //this._angle = (this._angle + 90) % 360;
     //this._enclosure.css({

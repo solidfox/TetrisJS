@@ -19,6 +19,7 @@ Controller.prototype.startstop = function() {
         $('#startstop').attr('value', 'restart');
     }else if( $('#startstop').attr('value') == 'restart' ){
         this._gameArea.loop();
+        $('#startstop').attr('value', 'pause');
     }
 };
 Controller.prototype.gameOver = function() {

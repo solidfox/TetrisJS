@@ -148,7 +148,7 @@ GameArea.prototype.pause = function(){
 
 GameArea.prototype.rotateKey = function() {
 	this.tetrisBlock.rotate();
-    this._blockView.rotate(this.tetrisBlock.getPoints());
+    this._blockView.rotate(this.tetrisBlock.getPoints(), this.tetrisBlock.getColor());
     //$('.PointView').animate({rotate: '+=90deg'}, 100);
 };
 GameArea.prototype.deleteRow = function() {
@@ -160,6 +160,6 @@ GameArea.prototype._newBlock = function() {
 	if (!(this._blockview === undefined)) {
 		this._blockview.remove();
 	}
-	this._blockView = new PointView(this.pointSize, this.tetrisBlock.getPoints(), this.blockPosition);
+	this._blockView = new PointView(this.pointSize, this.tetrisBlock.getPoints(), this.blockPosition, this.tetrisBlock.getColor());
 	this.canvas.append(this._blockView._enclosure); // TODO uncool to use private property here.
 }
