@@ -14,7 +14,7 @@ BlockView.prototype.interrupt = function() {
     this._pointCluster.interrupt(this._tetrisBlock.getPosition());
 };
 
-BlockView.prototype.rotate = function(){
+BlockView.prototype.update = function(){
 	this._pointCluster.transformTo(this._tetrisBlock.getPoints());
 };
 BlockView.prototype.remove = function () {
