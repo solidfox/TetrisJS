@@ -7,7 +7,7 @@
 $(document).ready(function(){
     controller = new Controller();
     $("#startstop").bind('click', function(){
-        controller.startstop()
+        controller.startstop();
     });
 });
 

@@ -29,29 +29,29 @@ function PointView(pointSize, points, position, color) {
 
 PointView.prototype._getPointElements = function() {
 	return $(this._enclosure).children();
-}
+};
 PointView.prototype._drawnPoint = function() {
 	var div = $('<div class="point"></div>');
 	div.css({
 		position: 'absolute',
-		height: this._pointSize, 
+		height: this._pointSize,
 		width: this._pointSize
 	});
 	return div;
-}
+};
 PointView.prototype._addPoint = function(position, color) {
 	var point = this._drawnPoint();
     point.attr("data-relative-row",position.y);
 	point.css({
 		top: (position.y * this._pointSize),
 		left: (position.x * this._pointSize),
-        background : color,
+        background : color
 	});
 	this._enclosure.append(point);
     return point;
-}
+};
 
-/** 
+/**
  * Moves the block to @param position
  */
 PointView.prototype.move = function(position, animationTime) {
@@ -74,7 +74,7 @@ PointView.prototype.move = function(position, animationTime) {
 	}
 	if (position.y != this._position.y) {
 		this._enclosure.animate({
-			top: position.y * this._pointSize,
+			top: position.y * this._pointSize
 		}, {
 			duration: animationTime,
 			queue: false
@@ -82,11 +82,11 @@ PointView.prototype.move = function(position, animationTime) {
 	}
 	
 	this._position = new Point(position);
-}
+};
 
 /**
  * Interrupt animation
- * stop animating and move the block to the 
+ * stop animating and move the block to the
  * right position
  *
  * @param position  the position of the point
@@ -98,7 +98,7 @@ PointView.prototype.interrupt = function(position) {
 		top: position.y * this._pointSize,
 		left: position.x * this._pointSize
 	});
-}
+};
 
 /*
 PointView.prototype.stopped = function(position){
@@ -125,7 +125,7 @@ PointView.prototype.rotate = function(points, color){
     //    "-webkit-transform-origin": "50% 50% 0",
     //    "transform": "rotate("+this._angle+"deg)"
     //});
-}
+};
 PointView.prototype.remove = function () {
 	this._enclosure.remove();
-}
+};
