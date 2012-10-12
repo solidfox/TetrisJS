@@ -46,7 +46,13 @@ Controller.prototype.bindKeys = function () {
 						self._gameArea.downKey();
 						break;
 				case 38: //when up arrow key is pushed
-						self._gameArea.rotateKey();
+						self._gameArea.rotateLeftKey();
+						break;
+				case 188:
+						self._gameArea.rotateLeftKey();
+						break;
+				case 190:
+						self._gameArea.rotateRightKey();
 						break;
 			}
 	});
