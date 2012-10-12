@@ -3,7 +3,7 @@
  *
  * The model of the bottom of gameArea
  *
- * Holds the status of each row by bitarray 
+ * Holds the status of each row by bitarray
  */
 function Mess(width, height, pointSize) {
     this._width = width;
@@ -21,13 +21,13 @@ function Mess(width, height, pointSize) {
             this._rows[i][j] = 0;
         }
     }
-};
+}
 
 Mess.prototype.hasCompleteRow = function() {
 };
 /**
  *  Delete a row
- *  
+ *
  *  Delete the row i and redraw the points
  *
  *  @param i    the row number
@@ -83,7 +83,7 @@ Mess.prototype.getPoints = function() {
  *
  *  Add the points to mess and redraw the point
  */
-Mess.prototype.add = function(tetrisBlock, blockPosition) { 
+Mess.prototype.add = function(tetrisBlock, blockPosition) {
     var blockPoints = tetrisBlock.getPoints();
     var x = 0;
     var y = 0;
@@ -104,12 +104,12 @@ Mess.prototype.add = function(tetrisBlock, blockPosition) {
         this._rowPoints[y][x] = div.appendTo(".gameCanvas");
     }
     return this._rows;
-}
+};
 Mess.prototype.hasPoint = function(point){
     return (this._rows[point.y][point.x] !== 0);
-}
+};
 Mess.prototype.check = function(){
-    var list = new Array();
+    var list = [];
     for(var i = 0; i < this._height ; i++){
         for (var j = 0; j < this._width; j++) {
             if(this._rows[i][j] !== 1){
@@ -121,8 +121,8 @@ Mess.prototype.check = function(){
         }
     }
     return list;
-}
+};
 Mess.prototype.getHeight = function() {
 	// TODO
-}
+};
 
