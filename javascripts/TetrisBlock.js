@@ -26,8 +26,22 @@ TetrisBlock.prototype.rotate =function() {
 	this._matrix.rotate();
 	return this;
 };
-TetrisBlock.prototype.getPoints = function() {
-	return this._matrix.getPoints();
+
+/**
+ * Returns the points in the matrix. Optionally you can provide a point position of
+ * the matrix, that way the returned points will be offset from that point instead of (0,0).
+ *
+ * Example: given this matrix:
+ * [0,1]
+ * [1,0]
+ * and the Point (3,4) the returned points will be
+ * [Point(3,5), Point(4,4)]
+ *
+ * @returns the points in the matrix offset from the incomming Point object.
+ * @argument position the Point object from which to offset the points.
+ */
+TetrisBlock.prototype.getPoints = function(position) {
+	return this._matrix.getPoints(position);
 };
 TetrisBlock.prototype.getColor = function(){
 	return this._color;
