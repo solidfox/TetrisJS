@@ -9,7 +9,7 @@
  * @param color     the color of the block
  * @param z			the depth at which the object lies
  */
-function PointView(pointSize, points, position, color, z) {
+function PointView(pointSize, points, position, z) {
 	if (z === undefined) {
 		z = 0;
 	}
@@ -28,14 +28,14 @@ function PointView(pointSize, points, position, color, z) {
     
     
 	for (var i = 0; i < points.length; i++) {
-		this._addPoint(points[i], color);
+		this._addPoint(points[i]);
 	}
 }
 
 PointView.prototype._getPointElements = function() {
 	return $(this._enclosure).children();
 };
-PointView.prototype._drawnPoint = function() {
+PointView.prototype._newDrawnPoint = function() {
 	var div = $('<div class="point"></div>');
 	div.css({
 		position: 'absolute',
@@ -44,13 +44,14 @@ PointView.prototype._drawnPoint = function() {
 	});
 	return div;
 };
-PointView.prototype._addPoint = function(position, color) {
-	var point = this._drawnPoint();
+PointView.prototype._addPoint = function(position) {
+	position.color = position.color === undefined ? "white" : position.color;
+	var point = this._newDrawnPoint();
     point.attr("data-relative-row",position.y);
 	point.css({
 		top: (position.y * this._pointSize),
 		left: (position.x * this._pointSize),
-        background : color
+        background : position.color
 	});
 	this._enclosure.append(point);
     return point;

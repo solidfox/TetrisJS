@@ -1,7 +1,9 @@
-
+/**
+ * View class specifically made for viewing tetris blocks.
+ */
 function BlockView(tetrisBlock, pointSize) {
 	this._tetrisBlock = tetrisBlock;
-	this._pointView = new PointView(pointSize, tetrisBlock.getPoints(), tetrisBlock.getPosition(), tetrisBlock.getColor());
+	this._pointView = new PointView(pointSize, tetrisBlock.getPoints(), tetrisBlock.getPosition());
 }
 
 BlockView.prototype.move = function(animationTime) {
@@ -13,7 +15,7 @@ BlockView.prototype.interrupt = function() {
 };
 
 BlockView.prototype.rotate = function(){
-	this._pointView.rotate(this._tetrisBlock.getPoints(), this._tetrisBlock.getColor());
+	this._pointView.rotate(this._tetrisBlock.getPoints());
 };
 BlockView.prototype.remove = function () {
 	this._pointView.remove();

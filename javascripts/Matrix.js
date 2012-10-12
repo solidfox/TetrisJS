@@ -3,7 +3,8 @@
  *
  * an easy way to express a block's shape
  */
-function Matrix(twoDimArray) {
+function Matrix(twoDimArray, color) {
+	this._color = color;
 	this._matrix = twoDimArray; // Holds the actual matrix
 }
 
@@ -32,11 +33,14 @@ Matrix.prototype.getPoints = function(position) {
 		for (var j = 0; j < row.length; j++) {
 			var x = j + position.x;
 			if (row[j] == 1) {
-				points.push(new Point(x, y));
+				points.push(new Point(x, y, this._color));
 			}
 		}
 	}
 	return points;
+};
+Matrix.prototype.getColor = function () {
+	return this._color;
 };
 Matrix.prototype.countRows = function () {
 	return this._matrix.length;

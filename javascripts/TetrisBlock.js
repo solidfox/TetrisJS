@@ -5,19 +5,22 @@
  * @param kind string the blocktype you want.
  */
 function TetrisBlock(position, kind) {
+	var matrix;
+	var color;
 	if (kind === undefined) {
 		var keys = Object.keys(this.defaultBlocks);
 		var randomIndex = Math.floor( Math.random() * keys.length );
-		this.name = keys[randomIndex];
-		matrix = this.defaultBlocks[keys[randomIndex]];
-		color = this.defaultColors[keys[randomIndex]];
+		kind = keys[randomIndex];
+		matrix = this.defaultBlocks[kind];
+		color = this.defaultColors[kind];
 	} else {
-		this.name = kind;
+		
 		matrix = this.defaultBlocks[kind];
 		color = this.defaultColors[kind];
 	}
 	//Get the points of blocks
-	this._matrix = new Matrix(matrix);
+	this.name = kind;
+	this._matrix = new Matrix(matrix, color);
 	this._position = position;
 	this._color = color;
 }
