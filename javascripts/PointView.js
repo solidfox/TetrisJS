@@ -9,10 +9,7 @@
  * @param color     the color of the block
  * @param z			the depth at which the object lies
  */
-function PointView(pointSize, points, position, z) {
-	if (z === undefined) {
-		z = 0;
-	}
+function PointView(pointSize, points, position) {
 
 	this._position = new Point(position);
 	this._pointSize = pointSize;
@@ -21,8 +18,7 @@ function PointView(pointSize, points, position, z) {
 	this._enclosure.css({
 		position: 'absolute',
 		top: position.y * this._pointSize,
-		left: position.x * this._pointSize,
-		'z-index': z
+		left: position.x * this._pointSize
 	});
     this._points = points; //an array of points
     
