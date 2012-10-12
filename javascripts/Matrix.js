@@ -5,7 +5,7 @@
  */
 function Matrix(twoDimArray, color) {
 	this._color = color;
-	this._matrix = twoDimArray; // Holds the actual matrix
+	this._matrix = twoDimArray;
 }
 
 /**
@@ -23,7 +23,7 @@ function Matrix(twoDimArray, color) {
  */
 Matrix.prototype.getPoints = function(position) {
 	if (position === undefined) {
-		position = new Point(0, 0);
+		position = new Point(0,0);
 	}
 	
 	var points = [];
@@ -32,7 +32,8 @@ Matrix.prototype.getPoints = function(position) {
 		var y = i + position.y;
 		for (var j = 0; j < row.length; j++) {
 			var x = j + position.x;
-			if (row[j] == 1) {
+			if (row[j] !== 0) {
+				var color = (typeof row[j] == 'string') ? row[j] : this._color;
 				points.push(new Point(x, y, this._color));
 			}
 		}
@@ -44,6 +45,9 @@ Matrix.prototype.getColor = function () {
 };
 Matrix.prototype.countRows = function () {
 	return this._matrix.length;
+};
+Matrix.prototype.addPoint = function (point) {
+	this._matrix[point.y][point.x] = color;
 };
 Matrix.prototype.rotateLeft = function () {
 	var pre = this._matrix;   //previous matrix
