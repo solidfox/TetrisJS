@@ -52,14 +52,13 @@ GameArea.prototype.clearCanvas = function(aDiv) {
  */
 GameArea.prototype.hasCollided = function() {
     var debug = $("#debug p");
-	var point = new Point(0, 0);
+	var point = new Point(  this.blockPosition.x,
+                            this.blockPosition.y + 1);
 	//var matrix = this.tetrisBlock.matrix;
-    var bpoints = this.tetrisBlock.getPoints();  //The Points of the block
+    var bpoints = this.tetrisBlock.getPoints(point);  //The Points of the block
 
     for (var i = 0; i < bpoints.length; i++){
         //Calculate the absolute position for each point of the block
-        point.x = bpoints[i].x + this.blockPosition.x;
-        point.y = bpoints[i].y + this.blockPosition.y + 1;  //next point
         debug.text("point x:"+point.x+" point y:"+point.y);
         if (point.y >= this.height){
             return true;
@@ -71,20 +70,7 @@ GameArea.prototype.hasCollided = function() {
             return true;
         }
     }
-	
-    //for (var i = 0; i < matrix.length; i++) {
-	//    var blockRow = matrix[i];
-	//    point.y = i + this.blockPosition.y;
-	//    for (var j = 0; j < blockRow.length; j++) {
-	//      point.x = j + blockPosition.x;
-	//      if (mess.hasPoint(point)) {
-	//          return true;
-	//      }
-	//      if (point.y + this.tetrisBlock.getHeight() >= this.height) {
-	//          return true;
-	//      }
-	//    }
-    //}
+    
     return false;
 };
 GameArea.prototype.isGameOver = function() {
