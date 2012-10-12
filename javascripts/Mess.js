@@ -23,8 +23,6 @@ function Mess(width, height, pointSize) {
     }
 }
 
-Mess.prototype.hasCompleteRow = function() {
-};
 /**
  *  Delete a row
  *
@@ -108,8 +106,8 @@ Mess.prototype.add = function(tetrisBlock, blockPosition) {
 Mess.prototype.hasPoint = function(point){
     return (this._rows[point.y][point.x] !== 0);
 };
-Mess.prototype.check = function(){
-    var list = [];
+Mess.prototype.getCompleteRows = function(){
+    var completeRows = [];
     for(var i = 0; i < this._height ; i++){
         for (var j = 0; j < this._width; j++) {
             if(this._rows[i][j] !== 1){
@@ -117,10 +115,10 @@ Mess.prototype.check = function(){
             }
         }
         if (j == this._width) {
-            list.push(i);
+            completeRows.push(i);
         }
     }
-    return list;
+    return completeRows;
 };
 Mess.prototype.getHeight = function() {
 	// TODO
