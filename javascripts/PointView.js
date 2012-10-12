@@ -7,9 +7,13 @@
  * @param array     the matrix that defines the block
  * @param position  the position(left.top) to draw the block
  * @param color     the color of the block
+ * @param z			the depth at which the object lies
  */
-function PointView(pointSize, points, position, color) {
-	
+function PointView(pointSize, points, position, color, z) {
+	if (z === undefined) {
+		z = 0;
+	}
+
 	this._position = new Point(position);
 	this._pointSize = pointSize;
     this._angle = 0;
@@ -17,7 +21,8 @@ function PointView(pointSize, points, position, color) {
 	this._enclosure.css({
 		position: 'absolute',
 		top: position.y * this._pointSize,
-		left: position.x * this._pointSize
+		left: position.x * this._pointSize,
+		'z-index': z
 	});
     this._points = points; //an array of points
     
