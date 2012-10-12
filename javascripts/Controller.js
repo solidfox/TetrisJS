@@ -4,7 +4,7 @@
  * The class that manages the gama start/pause
  */
 var Controller = function() {
-	this._gameArea = undefined;
+	this._gameArea = null;
 };
 
 //Methods
