@@ -70,7 +70,7 @@ GameArea.prototype.hasCollided = function() {
             return true;
         }
     }
-    
+
     return false;
 };
 GameArea.prototype.isGameOver = function() {
@@ -80,7 +80,7 @@ GameArea.prototype.loop = function() {
 	this._loopRunning = true;
 	var loopPeriod = this.baseSpeed/this.speed;
 	var that = this;
-    var list;
+    var completeRows = [];
     if( this._start === false ){
         this._start = true;
         this._newBlock();
@@ -88,9 +88,9 @@ GameArea.prototype.loop = function() {
 //        this._blockView.stopped(this.blockPosition);
 		this.mess.add(this.tetrisBlock, this.blockPosition);
         this._blockView.remove();
-        list = this.mess.check();  //check if there is a row that has completed
-        for( var i = 0; i < list.length ; i++ ){
-            this.mess.deleteRow(list[i]);
+        completeRows = this.mess.getCompleteRows();  //check if there is a row that has completed
+        for( var i = 0; i < completeRows.length ; i++ ){
+            this.mess.deleteRow(completeRows[i]);
         }
         this._newBlock();
     }else{
@@ -142,8 +142,6 @@ GameArea.prototype.leftKey = function() {
 	}
 };
 GameArea.prototype.downKey = function() {
-    //this.blockPosition.y++;
-    //this._blockView.move(this.blockPosition, 100);
     if( this.speed != 10){
         this.stopLoop();
         this.speed = 10;
@@ -164,7 +162,6 @@ GameArea.prototype.pause = function(){
 GameArea.prototype.rotateKey = function() {
 	this.tetrisBlock.rotate();
     this._blockView.rotate(this.tetrisBlock.getPoints(), this.tetrisBlock.getColor());
-    //$('.PointView').animate({rotate: '+=90deg'}, 100);
 };
 GameArea.prototype.deleteRow = function() {
     window.alert("Game area delete");
