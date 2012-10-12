@@ -1,5 +1,5 @@
 /**
- * GameArea 
+ * GameArea
  * @param gameareaDiv jQuery object for the gamearea
  */
 function GameArea(gameareaDiv) {
@@ -8,32 +8,32 @@ function GameArea(gameareaDiv) {
 	}
 
     this._start = false;    //The status whether the game has started
-    this._loop;             //loop object used for interrupt
+    this._loop = undefined;             //loop object used for interrupt
     this._loopRunning = false;
 
 	this.width = 10;         // ten block width
 	this.height = 20;
+    this.pointSize = 20;      // size of one point in pixels
 	
 	this.STARTPOSITION = new Point(this.width/2,0+2);
 	
-    this.pointSize = 20;     	// size of one point in pixels
     
-	this.baseSpeed = 1000; 		// Milliseconds for block to move down one row
-	this.speed = 1;				// Divisor by which to divide the baseSpeed
+	this.baseSpeed = 1000;      // Milliseconds for block to move down one row
+	this.speed = 1;             // Divisor by which to divide the baseSpeed
 	
 	this.mess = new Mess(this.width, this.height, this.pointSize);
-	this.tetrisBlock;
-	this.blockPosition;			// A Point object
+	this.tetrisBlock = undefined;
+	this.blockPosition = undefined;		// A Point object
     
-    this.canvas = undefined;    // A jQuery object using 
+    this.canvas = undefined;    // A jQuery object using
     this.clearCanvas(gameareaDiv);
     
-    this._blockView;
-    this._messView;
-};
+    this._blockView = undefined;
+    this._messView = undefined;
+}
 
 GameArea.prototype.clearCanvas = function(aDiv) {
-    if (!(this.canvas === undefined)) {
+    if (this.canvas !== undefined) {
         $(this.canvas).remove();
     }
     var pixelWidth = this.pointSize * this.width;
@@ -43,9 +43,9 @@ GameArea.prototype.clearCanvas = function(aDiv) {
         position: "relative",
         width: pixelWidth,
         height: pixelHeight,
-        margin: '-2px 0 0 0',   //to align bottom
+        margin: '-2px 0 0 0'   //to align bottom
     });
-}
+};
 /**
  * Determines if the currently moving tetris block has collided.
  * Precondition: there has to be a moving tetris block.
@@ -68,28 +68,28 @@ GameArea.prototype.hasCollided = function() {
             return true;
         }
         if (point.x < 0 || point.x >= this.width) {
-	        return true;
+            return true;
         }
     }
 	
     //for (var i = 0; i < matrix.length; i++) {
-	//    var blockRow = matrix[i];       
+	//    var blockRow = matrix[i];
 	//    point.y = i + this.blockPosition.y;
 	//    for (var j = 0; j < blockRow.length; j++) {
-	//	    point.x = j + blockPosition.x;
-	//	    if (mess.hasPoint(point)) {
-	//		    return true;
-	//	    }
-	//	    if (point.y + this.tetrisBlock.getHeight() >= this.height) {
-	//		    return true;
-	//	    }
+	//      point.x = j + blockPosition.x;
+	//      if (mess.hasPoint(point)) {
+	//          return true;
+	//      }
+	//      if (point.y + this.tetrisBlock.getHeight() >= this.height) {
+	//          return true;
+	//      }
 	//    }
     //}
     return false;
-}
+};
 GameArea.prototype.isGameOver = function() {
 	return this.mess.getHeight() >= this.height;
-}
+};
 GameArea.prototype.loop = function() {
 	this._loopRunning = true;
 	var loopPeriod = this.baseSpeed/this.speed;
@@ -118,7 +118,7 @@ GameArea.prototype.loop = function() {
 		alert("Game Over");
 	}
 	
-	this._loop = setTimeout(function(){that.loop()}, loopPeriod);
+	this._loop = setTimeout(function(){that.loop();}, loopPeriod);
 	this._loopRunning = false;
 };
 //GameArea.prototype.startLoop = function(){
@@ -131,7 +131,7 @@ GameArea.prototype.stopLoop = function(){
 	//if (!(this._loop === undefined)) {
 	//	if (!this._loopRunning) {
 	//		clearTimeout(this._loop);
-	//		this._loop = undefined;	
+	//		this._loop = undefined;
 	//	} else {
 	//		setTimeout(function () {self.stopLoop();}, 10);
 	//	}
@@ -144,7 +144,7 @@ GameArea.prototype.rightKey = function() {
 	if (this.hasCollided()) {
 		this.blockPosition.x--;
 	} else {
-	    this._blockView.move(this.blockPosition,100);		
+        this._blockView.move(this.blockPosition,100);
 	}
 };
 GameArea.prototype.leftKey = function() {
@@ -152,12 +152,12 @@ GameArea.prototype.leftKey = function() {
     if (this.hasCollided()) {
 		this.blockPosition.x++;
 	} else {
-	    this._blockView.move(this.blockPosition,100);		
+        this._blockView.move(this.blockPosition,100);
 	}
 };
 GameArea.prototype.downKey = function() {
     //this.blockPosition.y++;
-    //this._blockView.move(this.blockPosition, 100); 
+    //this._blockView.move(this.blockPosition, 100);
     if( this.speed != 10){
         this.stopLoop();
         this.speed = 10;
@@ -182,13 +182,13 @@ GameArea.prototype.rotateKey = function() {
 };
 GameArea.prototype.deleteRow = function() {
     window.alert("Game area delete");
-}
+};
 GameArea.prototype._newBlock = function() {
 	this.tetrisBlock = new TetrisBlock();
 	this.blockPosition = new Point(this.width/2,0);
-	if (!(this._blockview === undefined)) {
+	if (this._blockview !== undefined) {
 		this._blockview.remove();
 	}
 	this._blockView = new PointView(this.pointSize, this.tetrisBlock.getPoints(), this.blockPosition, this.tetrisBlock.getColor());
 	this.canvas.append(this._blockView._enclosure); // TODO uncool to use private property here.
-}
+};

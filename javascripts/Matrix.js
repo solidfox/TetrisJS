@@ -1,12 +1,15 @@
 /**
  * Matrix
- * 
+ *
  * an easy way to express a block's shape
  */
 function Matrix(twoDimArray) {
 	this._matrix = twoDimArray; // Holds the actual matrix
 }
-//gives the points
+
+/**
+ * Return
+ */
 Matrix.prototype.getPoints = function(position) {
 	if (position === undefined) {
 		position = new Point(0, 0);
@@ -14,20 +17,20 @@ Matrix.prototype.getPoints = function(position) {
 	
 	var points = [];
     for (var i = 0; i < this._matrix.length; i++) {
-	    var blockRow = this._matrix[i];
-	    var y = i + position.y;
-	    for (var j = 0; j < blockRow.length; j++) {
-		    var x = j + position.x;
-		    if (blockRow[j] == 1) {
-			    points.push(new Point(x, y));
-		    }
-	    }
-    }
+		var blockRow = this._matrix[i];
+		var y = i + position.y;
+		for (var j = 0; j < blockRow.length; j++) {
+			var x = j + position.x;
+			if (blockRow[j] == 1) {
+				points.push(new Point(x, y));
+			}
+		}
+	}
     return points;
-}
+};
 Matrix.prototype.countRows = function () {
 	return this._matrix.length;
-}
+};
 Matrix.prototype.rotate = function () {
 	var pre = this._matrix;   //previous matrix
     var next = new Array(pre[0].length);    //the rotated matrix
@@ -39,4 +42,4 @@ Matrix.prototype.rotate = function () {
         next[n] = temp;
     }
     this._matrix = next;
-}
+};
