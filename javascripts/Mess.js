@@ -81,15 +81,15 @@ Mess.prototype.getPoints = function() {
  *
  *  Add the points to mess and redraw the point
  */
-Mess.prototype.add = function(tetrisBlock, blockPosition) {
+Mess.prototype.add = function(tetrisBlock) {
     var blockPoints = tetrisBlock.getPoints();
     var x = 0;
     var y = 0;
     //add one point at a time
     for( i=0; i < blockPoints.length ; i++ ){
         var div = $('<div class="point"></div>');
-        x = blockPoints[i].x + blockPosition.x;
-        y = blockPoints[i].y + blockPosition.y;
+        x = blockPoints[i].x + tetrisBlock.xPos();
+        y = blockPoints[i].y + tetrisBlock.yPos();
         div.css({
             position: 'absolute',
             height: this._pointSize,

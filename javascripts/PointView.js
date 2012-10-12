@@ -134,3 +134,6 @@ PointView.prototype.rotate = function(points, color){
 PointView.prototype.remove = function () {
 	this._enclosure.remove();
 };
+PointView.prototype.showOn = function (htmlParent) {
+	htmlParent.append(this._enclosure);
+};

@@ -4,7 +4,7 @@
  * The model that defines the blocks
  * @param kind string the blocktype you want.
  */
-function TetrisBlock(kind) {
+function TetrisBlock(position, kind) {
 	if (kind === undefined) {
 		var keys = Object.keys(this.defaultBlocks);
 		var randomIndex = Math.floor( Math.random() * keys.length );
@@ -18,6 +18,7 @@ function TetrisBlock(kind) {
 	}
 	//Get the points of blocks
 	this._matrix = new Matrix(matrix);
+	this._position = position;
 	this._color = color;
 }
 
@@ -48,6 +49,27 @@ TetrisBlock.prototype.getColor = function(){
 };
 TetrisBlock.prototype.getHeight = function () {
 	return matrix.countRows();
+};
+TetrisBlock.prototype.getPosition = function () {
+	return new Point(this._position);
+};
+TetrisBlock.prototype.xPos = function () {
+	return this._position.x;
+};
+TetrisBlock.prototype.yPos = function () {
+	return this._position.y;
+};
+TetrisBlock.prototype.moveLeft = function () {
+	this._position.x--;
+};
+TetrisBlock.prototype.moveRight = function () {
+	this._position.x++;
+};
+TetrisBlock.prototype.moveDown = function () {
+	this._position.y++;
+};
+TetrisBlock.prototype.moveUp = function () {
+	this._position.y--;
 };
 TetrisBlock.prototype.defaultBlocks = {
 	"sBlock": [
