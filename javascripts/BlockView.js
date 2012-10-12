@@ -3,23 +3,23 @@
  */
 function BlockView(tetrisBlock, pointSize) {
 	this._tetrisBlock = tetrisBlock;
-	this._pointView = new PointView(pointSize, tetrisBlock.getPoints(), tetrisBlock.getPosition());
+	this._pointCluster = new PointClusterView(pointSize, tetrisBlock.getPoints(), tetrisBlock.getPosition());
 }
 
 BlockView.prototype.move = function(animationTime) {
-	this._pointView.move(this._tetrisBlock.getPosition(), animationTime);
+	this._pointCluster.move(this._tetrisBlock.getPosition(), animationTime);
 };
 
 BlockView.prototype.interrupt = function() {
-    this._pointView.interrupt(this._tetrisBlock.getPosition());
+    this._pointCluster.interrupt(this._tetrisBlock.getPosition());
 };
 
 BlockView.prototype.rotate = function(){
-	this._pointView.rotate(this._tetrisBlock.getPoints());
+	this._pointCluster.transformTo(this._tetrisBlock.getPoints());
 };
 BlockView.prototype.remove = function () {
-	this._pointView.remove();
+	this._pointCluster.remove();
 };
 BlockView.prototype.showOn = function (htmlParent) {
-	this._pointView.showOn(htmlParent);
+	this._pointCluster.showOn(htmlParent);
 };
