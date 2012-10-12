@@ -25,9 +25,13 @@ function TetrisBlock(position, kind) {
 	this._color = color;
 }
 
-TetrisBlock.prototype.rotate =function() {
-	// TODO need to recalculate the blockPosition
-	this._matrix.rotate();
+TetrisBlock.prototype.rotateLeft =function() {
+	this._matrix.rotateLeft();
+	return this;
+};
+
+TetrisBlock.prototype.rotateRight =function() {
+	this._matrix.rotateRight();
 	return this;
 };
 

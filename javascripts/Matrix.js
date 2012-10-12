@@ -45,7 +45,7 @@ Matrix.prototype.getColor = function () {
 Matrix.prototype.countRows = function () {
 	return this._matrix.length;
 };
-Matrix.prototype.rotate = function () {
+Matrix.prototype.rotateLeft = function () {
 	var pre = this._matrix;   //previous matrix
 	var next = new Array(pre[0].length);    //the rotated matrix
 	for( n = 0 ; n < next.length ; n++ ){
@@ -54,6 +54,19 @@ Matrix.prototype.rotate = function () {
 			temp[i] = pre[i][next.length - 1 - n];
 		}
 		next[n] = temp;
+	}
+	this._matrix = next;
+};
+Matrix.prototype.rotateRight = function () {
+	var pre = this._matrix;   //previous matrix
+	var yLength = pre.length;
+	var xLength = pre[0].length;
+	var next = new Array(xLength);    //the rotated matrix
+	for( var y = 0 ; y < xLength ; y++ ){
+		next[y] = new Array(yLength);
+		for( x = 0 ; x < yLength ; x++ ){
+			next[y][x] = pre[yLength - 1 - x][y];
+		}
 	}
 	this._matrix = next;
 };
