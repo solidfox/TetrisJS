@@ -102,7 +102,7 @@ PointClusterView.prototype.stopped = function(position){
  */
 PointClusterView.prototype.transformTo = function(points, color){
     for( i=0 ; i<points.length ; i++ ){
-        this._pointViews[i].move(points[i],50);
+        this._pointViews[i].move(points[points.length - i - 1],100);
     }
     //this._angle = (this._angle + 90) % 360;
     //this._enclosure.css({
