@@ -51,6 +51,9 @@ TetrisBlock.prototype.rotateRight =function() {
 TetrisBlock.prototype.getPoints = function(position) {
 	return this._matrix.getPoints(position);
 };
+TetrisBlock.prototype.getAbsolutePoints = function() {
+	return this._matrix.getPoints(new Point(this._position));
+};
 TetrisBlock.prototype.getColor = function(){
 	return this._color;
 };

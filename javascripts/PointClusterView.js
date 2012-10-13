@@ -10,7 +10,7 @@
  * @param z			the depth at which the object lies
  */
 function PointClusterView(pointSize, points, position) {
-
+	position = position || new Point(0,0);
 	this._position = new Point(position);
 	this._pointSize = pointSize;
 	this._enclosure = $('<div class="PointClusterView"></div>');

@@ -10,7 +10,7 @@
  * @param z			the depth at which the object lies
  */
 function PointView(point, size) {
-	point.color = point.color === undefined ? "gray" : point.color;
+	var color = point.color || "gray";
 	this._position = new Point(point);
 	this._size = size;
 	this._drawn = $('<div class="point"></div>');
@@ -20,7 +20,7 @@ function PointView(point, size) {
 		left: point.x * size,
 		width: size,
 		height: size,
-		background : point.color
+		background : color
 	});
 }
 
@@ -29,7 +29,7 @@ function PointView(point, size) {
  * Moves the block to @param position
  */
 PointView.prototype.move = function(position, animationTime) {
-	animationTime = animationTime === undefined ? 0 : animationTime;
+	animationTime = animationTime || 0;
 	
 	// Are we moving sideways or down?
 	if (position.x != this._position.x) {

@@ -6,7 +6,7 @@ function GameArea(gameareaDiv) {
 	if (gameareaDiv === undefined) {
 		throw new Error("GameArea was created without specifying a gameareaDiv.");
 	}
-
+	goj = [];
 	this._start = false;    //The status whether the game has started
 	this._loop = undefined;             //loop object used for interrupt
 	this._loopRunning = false;
@@ -21,14 +21,15 @@ function GameArea(gameareaDiv) {
 	this.baseSpeed = 1000;      // Milliseconds for block to move down one row
 	this.speed = 1;             // Divisor by which to divide the baseSpeed
 	
-	this.mess = new Mess(this.width, this.height, this._pointSize);
+	this.mess = new Mess(this.width, this.height);
 	this._tetrisBlock = undefined;
 	
 	this.canvas = undefined;    // A jQuery object using
 	this.clearCanvas(gameareaDiv);
 	
 	this._blockView = undefined;
-	this._messView = undefined;
+	this._messView = new MessView(this.mess, this._pointSize);
+	this._messView.showOn(this.canvas);
 }
 
 GameArea.prototype.clearCanvas = function(aDiv) {
@@ -96,6 +97,7 @@ GameArea.prototype.loop = function() {
 		for( var i = 0; i < completeRows.length ; i++ ){
 			this.mess.deleteRow(completeRows[i]);
 		}
+		this._messView.update();
 		this._newBlock();
 		if (this.hasCollided()) {
 			this._isGameOver = true;

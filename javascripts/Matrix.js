@@ -33,21 +33,58 @@ Matrix.prototype.getPoints = function(position) {
 		for (var j = 0; j < row.length; j++) {
 			var x = j + position.x;
 			if (row[j] !== 0) {
-				var color = (typeof row[j] == 'string') ? row[j] : this._color;
+				var color = row[j];
 				points.push(new Point(x, y, this._color));
 			}
 		}
 	}
 	return points;
 };
+Matrix.prototype.hasPoint = function (x,y) {
+	var column = x
+	var row = y;
+	if (x instanceof Point) {
+		column = x.x;
+		row = x.y;
+	}
+	return this._matrix[row][column] !== 0;
+};
+Matrix.prototype.getPoint = function (x,y) {
+	return new Point(x,y,this._matrix[y][x]);
+};
 Matrix.prototype.getColor = function () {
 	return this._color;
+};
+Matrix.prototype.getRow = function (row) {
+	return this._matrix[row];
+};
+Matrix.prototype.deleteRow = function (row) {
+	this._matrix.splice(row,1);
+	this._matrix.unshift(this._cleanRow());
+};
+Matrix.prototype._cleanRow = function () {
+    var row = new Array(this._matrix[0].length);
+    for (var i = 0; i < row.length; i++) {
+        row[i] = 0;
+    }
+    return row;
 };
 Matrix.prototype.countRows = function () {
 	return this._matrix.length;
 };
 Matrix.prototype.addPoint = function (point) {
+	color = point.color || 1;
 	this._matrix[point.y][point.x] = color;
+};
+Matrix.prototype.getPointsOnRow = function (row, customY) {
+	var rowLength = Array[this._matrix[0].length];
+	var points = Array[rowLength];
+	for (var column = 0; column < rowLength; column++) {
+		var point = this.getPoint(column,row);
+		if (typeof customY === 'number') {point.y = customY;}
+		points.push(point);
+	}
+	return points;
 };
 Matrix.prototype.rotateLeft = function () {
 	var pre = this._matrix;   //previous matrix
