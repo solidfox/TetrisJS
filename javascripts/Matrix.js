@@ -33,15 +33,15 @@ Matrix.prototype.getPoints = function(position) {
 		for (var j = 0; j < row.length; j++) {
 			var x = j + position.x;
 			if (row[j] !== 0) {
-				var color = row[j];
-				points.push(new Point(x, y, this._color));
+				var color = typeof row[j] == 'string' ? row[j] : this._color;
+				points.push(new Point(x, y, color));
 			}
 		}
 	}
 	return points;
 };
 Matrix.prototype.hasPoint = function (x,y) {
-	var column = x
+	var column = x;
 	var row = y;
 	if (x instanceof Point) {
 		column = x.x;
