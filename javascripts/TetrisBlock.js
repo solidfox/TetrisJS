@@ -111,6 +111,11 @@ TetrisBlock.prototype.defaultBlocks = {
 		[1,1],
 		[1,0],
 		[1,1]
+	],
+	"BoxBlock": [
+		[1,0,1],
+		[1,0,1],
+		[1,1,1]
 	]
 };
 //Define the color of each block
@@ -121,5 +126,6 @@ TetrisBlock.prototype.defaultColors = {
 	"SquareBlock":  "#fd00ff",
 	"MirrorLBlock": "#00ffff",
 	"MirrorSBlock": "#fffa00",
-	"SpecialBlock": "#ffffff"
+	"SpecialBlock": "#ffffff",
+	"BoxBlock": "#ffffff"
 };
