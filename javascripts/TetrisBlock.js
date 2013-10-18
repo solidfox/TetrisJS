@@ -105,12 +105,20 @@ TetrisBlock.prototype.defaultBlocks = {
 		[1,1,0],
 		[0,1,1]
 	],
-	"SpecialBlock": [
+	// "SpecialBlock": [
+	// 	[1,1],
+	// 	[0,1],
+	// 	[1,1],
+	// 	[1,0],
+	// 	[1,1]
+	// ],
+	"TBlock": [
+		[1,1,1],
+		[0,1,0]
+	],
+	"CornerBlock": [
 		[1,1],
-		[0,1],
-		[1,1],
-		[1,0],
-		[1,1]
+		[0,1]
 	],
 	"BoxBlock": [
 		[1,0,1],
@@ -127,5 +135,7 @@ TetrisBlock.prototype.defaultColors = {
 	"MirrorLBlock": "#00ffff",
 	"MirrorSBlock": "#fffa00",
 	"SpecialBlock": "#ffffff",
-	"BoxBlock": "#ffffff"
+	"BoxBlock": "#ffffff",
+	"TBlock": "#ddd",
+	"CornerBlock": "purple"
 };
